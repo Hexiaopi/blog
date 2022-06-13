@@ -1,6 +1,6 @@
 module.exports = {
-  title: "hexiaopi-blog",
-  description: 'Personal blog.',
+  title: "何小进童鞋",
+  description: '个人博客',
   dest: 'public',
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
@@ -8,18 +8,19 @@ module.exports = {
   ],
   theme: 'reco',
   themeConfig: {
+    subSidebar: 'auto',
     nav: [
-      { text: 'Home', link: '/', icon: 'reco-home' },
-      { text: 'TimeLine', link: '/timeline/', icon: 'reco-date' },
+      { text: '首页', link: '/', icon: 'reco-home' },
+      { text: '时间线', link: '/timeline/', icon: 'reco-date' },
       {
-        text: 'Docs',
+        text: '文档',
         icon: 'reco-message',
         items: [
-          { text: 'vuepress-reco', link: '/docs/theme-reco/' }
+          { text: 'vuepress-reco', link: '/docs/' }
         ]
       },
       {
-        text: 'Contact',
+        text: '联系我',
         icon: 'reco-message',
         items: [
           { text: 'GitHub', link: 'https://github.com/hexiaopi', icon: 'reco-github' }
@@ -39,11 +40,11 @@ module.exports = {
     blogConfig: {
       category: {
         location: 2, // 在导航栏菜单中所占的位置，默认2
-        text: 'Category' // 默认 “分类”
+        text: '分类' // 默认 “分类”
       },
       tag: {
         location: 3, // 在导航栏菜单中所占的位置，默认3
-        text: 'Tag' // 默认 “标签”
+        text: '标签' // 默认 “标签”
       }
     },
     friendLink: [
@@ -67,7 +68,7 @@ module.exports = {
     // 自动形成侧边导航
     // sidebar: 'auto',
     // 最后更新时间
-    lastUpdated: 'Last Updated',
+    lastUpdated: '最近更新时间',
     // 作者
     author: 'hexiaopi',
     // 作者头像
@@ -75,7 +76,7 @@ module.exports = {
     // 备案号
     record: 'xxxx',
     // 项目开始时间
-    startYear: '2022'
+    startYear: '2022',
     /**
      * 密钥 (if your blog is private)
      */
@@ -90,10 +91,10 @@ module.exports = {
      * valine 设置 (if you need valine comment )
      */
 
-    // valineConfig: {
-    //   appId: '...',// your appId
-    //   appKey: '...', // your appKey
-    // }
+    valineConfig: {
+      appId: 'uneT3yd27cgSQnzXs6U0lUxj-gzGzoHsz',// your appId
+      appKey: 'BscTftedJDk0mUJVokDYbOEH', // your appKey
+    }
   },
   markdown: {
     lineNumbers: true

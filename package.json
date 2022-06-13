@@ -1,7 +1,7 @@
 {
-  "name": "vuepress-theme-reco-demo",
+  "name": "hexiaopi-blog",
   "version": "1.0.0",
-  "author": "reco_luan",
+  "author": "hexiaopi",
   "scripts": {
     "dev": "vuepress dev . --open --host \"localhost\"",
     "build": "vuepress build ."

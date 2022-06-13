@@ -1,7 +1,7 @@
 ---
 home: true
-heroText: vuepress-theme-reco
-tagline: A simple and beautiful vuepress blog theme.
+heroText: 书山有路“趣”为径，学海无涯“乐”作舟
+tagline: 一枚后端攻城狮的个人博客
 # heroImage: /hero.png
 # heroImageStyle: {
 #   maxWidth: '600px',
