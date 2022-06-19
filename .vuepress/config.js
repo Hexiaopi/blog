@@ -1,3 +1,5 @@
+const plugins = require('./config/plugins')
+
 module.exports = {
   title: "何小进童鞋",
   description: '个人博客',
@@ -6,6 +8,7 @@ module.exports = {
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['meta', { name: 'viewport', content: 'width=device-width,initial-scale=1,user-scalable=no' }]
   ],
+
   theme: 'reco',
   themeConfig: {
     subSidebar: 'auto',
@@ -27,14 +30,14 @@ module.exports = {
         ]
       }
     ],
-    sidebar: {
-      '/docs/theme-reco/': [
-        '',
-        'theme',
-        'plugin',
-        'api'
-      ]
-    },
+    // sidebar: {
+    //   '/docs/theme-reco/': [
+    //     '',
+    //     'theme',
+    //     'plugin',
+    //     'api'
+    //   ]
+    // },
     type: 'blog',
     // 博客设置
     blogConfig: {
@@ -66,7 +69,8 @@ module.exports = {
     search: true,
     searchMaxSuggestions: 10,
     // 自动形成侧边导航
-    // sidebar: 'auto',
+    sidebar: 'auto',
+    sidebarDepth: 1,
     // 最后更新时间
     lastUpdated: '最近更新时间',
     // 作者
@@ -74,7 +78,7 @@ module.exports = {
     // 作者头像
     authorAvatar: '/avatar.png',
     // 备案号
-    record: 'xxxx',
+    //record: 'xxxx',
     // 项目开始时间
     startYear: '2022',
     /**
@@ -96,6 +100,7 @@ module.exports = {
       appKey: 'BscTftedJDk0mUJVokDYbOEH', // your appKey
     }
   },
+  plugins,
   markdown: {
     lineNumbers: true
   }
