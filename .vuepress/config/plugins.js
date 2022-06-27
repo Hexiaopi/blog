@@ -30,7 +30,7 @@ module.exports = [
   [
     '@vuepress-reco/vuepress-plugin-kan-ban-niang',
     {
-      theme: ['koharu', 'blackCat', 'whiteCat', 'haru1', 'haru2', 'haruto', 'izumi', 'shizuku', 'wanko', 'miku', 'z16'],
+      theme: ['wanko', 'koharu', 'blackCat', 'whiteCat', 'haru1', 'haru2', 'haruto', 'izumi', 'shizuku', 'miku', 'z16'],
       clean: false,
       messages: {
         welcome: '欢迎光临本舍',

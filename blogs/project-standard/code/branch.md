@@ -8,6 +8,7 @@ categories:
  -  项目规范
 ---
 
+![git-model](https://www.ruanyifeng.com/blogimg/asset/2015/bg2015122301.png)
 ::: tip
 一个好的代码分支应该是怎样的:question:
 :::
