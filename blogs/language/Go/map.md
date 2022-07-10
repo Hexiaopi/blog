@@ -92,7 +92,7 @@ type bmap struct{
 }
 ```
 
-![](image/map.png)
+![](./images/map.png)
 
 key和value分开存储，目的是为了减少内存对齐带来的内存浪费，以map[int8]int64为例：
 

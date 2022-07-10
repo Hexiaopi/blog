@@ -21,7 +21,7 @@ categories:
 2. pkg：安装后的归档文件（archive file），即程序编译后生产的静态库文件。同时会根据操作系统和计算机架构生产平台相关目录，例如是linux_amd64则表示是Linux系统，CPU是amd64架构。
 3. bin：可执行文件（executable file）。
 
-![GOPATH](./image/GOPATH.png)
+![GOPATH](./images/GOPATH.png)
 
 此外，还有几个环境变量需要关注
 

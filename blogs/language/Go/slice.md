@@ -66,7 +66,7 @@ s := u[3:7]
 fmt.Println(s, len(s), cap(s))  //[14 15 16 17] 4 7
 ```
 
-![](./image/slice-1.png)
+![](./images/slice-1.png)
 
 ## Append扩容
 ```go
@@ -85,7 +85,7 @@ fmt.Println(len(s), cap(s)) // 5 8
 ```
 其执行逻辑如下图所示：
 
-![](./image/slice-2.png)
+![](./images/slice-2.png)
 
 Append在当前数组容量无法满足时，会分配新的数组，新的数组容量会按一定的算法扩展（参见`$GOROOT/src/runtime/slice.go`的growslice函数），将旧数组中的数据复制到新数组之后，切片array指针指向新的数组，之后旧的数组就如果未被使用或其他切片引用会被垃圾回收掉。
 
