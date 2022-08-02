@@ -12,10 +12,20 @@ module.exports = {
 
   theme: 'reco',
   themeConfig: {
-    subSidebar: 'auto',
+    type: 'blog',
+    subSidebar: 'auto', //在所有页面中启用自动生成子侧边栏，原 sidebar 仍然兼容
+    /**
+     * support for
+     * 'default'
+     * 'funky'
+     * 'okaidia'
+     * 'solarizedlight'
+     * 'tomorrow'
+     */
+    codeTheme: 'tomorrow', // default 'tomorrow'
     nav: [
       { text: '首页', link: '/', icon: 'reco-home' },
-      { text: '时间线', link: '/timeline/', icon: 'reco-date' },
+      { text: '时间轴', link: '/timeline/', icon: 'reco-date' },
       {
         text: '文档',
         icon: 'reco-message',

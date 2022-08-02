@@ -4,10 +4,10 @@ date: 2022-08-01
 tags:
  - Go
 categories:
- -  leetcode
+ -  LeetCode
 ---
 
-## [1. Two Sum](https://leetcode.com/problems/two-sum/)
+## 题目[1. Two Sum](https://leetcode.com/problems/two-sum/)
 
 Given an array of integers `nums` and an integer `target`, return indices of the two numbers such that they add up to `target`.
 
@@ -81,7 +81,7 @@ func handleTwo(nums []int, target int) []int {
 ```
 
 
-**个人体会：**
+## 个人体会
 
 >这道题的思路是：将数组中的元素放在map中，索引为该元素，通过target-i=j，得到期望的j，再判断j是否存在。
 >
