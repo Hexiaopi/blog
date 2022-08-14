@@ -30,7 +30,22 @@ vscode这款插件太香了，终于可以沉浸式刷leetcode:smile:
 
 ### 预览
 ![](./images/vscode-leetcode-4.png)
-在左侧，该插件按照五个分类将题目进行了分类，比如：按照难易程度(简单、中等、难)、按照标签(数据、二叉搜索等)、按照公司(Google、Facebook等)
+
+>在左侧，该插件按照五个分类将题目进行了分类，比如：按照难易程度(简单、中等、难)、按照标签(数据、二叉搜索等)、按照公司(Google、Facebook等)
+>
+>且题目根据难易程度有不同的颜色进行区分，如果已经完成相关的练习，还会用:heavy_check_mark:提示
+
+### 个性化配置
+```json
+{
+  "leetcode.endpoint": "leetcode-cn",
+  "leetcode.workspaceFolder": "/Users/hechangjie/code/hexiaopi/leetcode-go",
+  "leetcode.defaultLanguage": "golang",
+  "leetcode.hint.configWebviewMarkdown": false,
+  "leetcode.hint.commentDescription": false,
+  "leetcode.hint.commandShortcut": false
+}
+```
 
 ## 沉浸式刷题
 
