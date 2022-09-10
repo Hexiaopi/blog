@@ -3,7 +3,7 @@ title: Go语言推荐博客
 date: 2022-09-08
 tags:
  - Go
- - 文章
+ - 博客
 categories:
  -  Go语言
 ---
