@@ -8,7 +8,7 @@ categories:
 ---
 
 # Commit Message
-Git每次提交代码，都需要写`Commit message`，好的规范例如：Angular规范，可以帮助我们：
+Git每次提交代码，都需要写`Commit message`，好的规范例如：[Angular规范](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines)，可以帮助我们：
 - 根据摘要信息就可以知道每次变更哪些内容
 - 可以过滤某些commit，例如只关注新增加的功能
 - 根据commit生成`Change log`
