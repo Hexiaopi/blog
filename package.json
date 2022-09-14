@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "author": "hexiaopi",
   "scripts": {
-    "dev": "vuepress dev . --open --host \"localhost\"",
-    "build": "vuepress build ."
+    "dev": "vuepress dev docs --open --host \"localhost\"",
+    "build": "vuepress build docs"
   },
   "devDependencies": {
     "@vuepress-reco/vuepress-plugin-bgm-player": "^1.1.4",
