@@ -34,9 +34,10 @@ module.exports = {
         ]
       },
       {
-        text: '联系我',
+        text: '关于我',
         icon: 'reco-message',
         items: [
+          { text: 'Profile', link: '/about/profile', icon: 'reco-other' },
           { text: 'GitHub', link: 'https://github.com/hexiaopi', icon: 'reco-github' }
         ]
       }
