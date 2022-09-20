@@ -90,7 +90,7 @@ module.exports = {
     // 作者头像
     authorAvatar: '/avatar.png',
     // 备案号
-    //record: 'xxxx',
+    record: '皖ICP备2022000616号-1',
     // 项目开始时间
     startYear: '2022',
     /**
