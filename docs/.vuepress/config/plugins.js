@@ -15,6 +15,12 @@ module.exports = [
           url: 'https://music.163.com/song/media/outer/url?id=25706282',
           cover: 'http://p1.music.126.net/Eef2K2KV9dT3XUA6_Ve-Rw==/109951165543196748.jpg?param=130y130'
         },
+        {
+          name: '你不要担心',
+          artist: '请回答1988',
+          url: 'https://music.163.com/song/media/outer/url?id=1374287809',
+          cover: 'http://p1.music.126.net/ApdA7j7QX3KxTGaiBrL2BA==/109951167920791267.jpg?param=177y177'
+        },
       ],
       autoplay: false, //是否自动播放
       autoShrink: true, //是否自动缩小
