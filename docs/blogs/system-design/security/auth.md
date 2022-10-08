@@ -100,7 +100,7 @@ OAuth当前是2.0版本，分为四种授权方式：密码式、隐藏式、凭
 
 ### Bearer认证
 
-> Bearer认证也称为令牌认证，是一种HTTP身份验证方法，Bearer认证的核心是bearer token。bearer token是一个加密字符串，通常由服务端根据秘钥生成。客户端在请求服务端时，必须在请求头中包含Authorization: Bearer <token>，服务端收到请求后，解析出token，并校验token的合法性。
+> Bearer认证也称为令牌认证，是一种HTTP身份验证方法，Bearer认证的核心是bearer token。bearer token是一个加密字符串，通常由服务端根据秘钥生成。客户端在请求服务端时，必须在请求头中包含Authorization: Bearer `<token>`，服务端收到请求后，解析出token，并校验token的合法性。
 
 当前最流行的token编码方式是JSON Web Token(JWT)
 
