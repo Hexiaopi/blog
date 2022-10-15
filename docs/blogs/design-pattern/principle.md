@@ -1,10 +1,12 @@
 ---
-title: SOLID原则
-date: 2022-09-12
+title: 设计模式-SOLID原则
+date: 2022-10-15
 tags:
- - 规范
+ - Go
+ - 设计模式
 categories:
- -  项目规范
+ -  设计模式
+sticky: 2
 ---
 
 【转】[原文链接](https://github.com/marmotedu/geekbang-go/blob/master/SOLID%E5%8E%9F%E5%88%99%E4%BB%8B%E7%BB%8D.md)
@@ -22,9 +24,9 @@ SOLID原则是由罗伯特·C·马丁在21世纪早期引入，指代了面向�
 | DIP  | The Dependency Inversion Principle  | 依赖倒置原则 |
 | ISP  | The Interface Segregation Principle | 接口分离原则 |
 
-### Single Responsibility Principle - 单一功能原则
+### 单一功能原则
 
-单一功能原则：一个类或者模块只负责完成一个职责(或者功能)。
+>单一功能原则：一个类或者模块只负责完成一个职责(或者功能)。
 
 简单来说就是保证我们在设计函数、方法时做到功能单一，权责明确，当发生改变时，只有一个改变它的原因。如果函数/方法承担的功能过多，就意味着很多功能会相互耦合，这样当其中一个功能发生改变时，可能会影响其它功能。单一功能原则，可以使代码后期的维护成本更低、改动风险更低。
 
@@ -116,9 +118,9 @@ func CreateClass() *Class {
 
 上述代码，我们将`createClass`函数拆分成2个函数`CreateStudent`和`CreateTeacher`，分别用来创建学生和老师，各司其职，代码互不影响。
 
-### Open / Closed Principle - 开闭原则
+### 开闭原则
 
-开闭原则：软件实体应该对扩展开放、对修改关闭。
+>开闭原则：软件实体应该对扩展开放、对修改关闭。
 
 简单来说就是通过在已有代码基础上扩展代码，而非修改代码的方式来完成新功能的添加。开闭原则，并不是说完全杜绝修改，而是尽可能不修改或者以最小的代码修改代价来完成新功能的添加。
 
@@ -145,7 +147,7 @@ func (n *NovelBook) GetPrice() int {
 }
 ```
 
-上述代码段，定义了一个Book接口和Book接口的一个实现：NovelBook（小说）。现在有新的需求，对所有小说打折统一打5折，根据开闭原则，打折相关的功能应该利用扩展实现，而不是在原有代码上修改，所以，新增一个OffNovelBook接口，继承NovelBook，并重写GetPrice方法。
+上述代码段，定义了一个Book接口和Book接口的一个实现：NovelBook（小说）。现在有新的需求，对所有小说打折统一打5折，根据开闭原则，**打折相关的功能应该利用扩展实现，而不是在原有代码上修改**，所以，新增一个OffNovelBook接口，继承NovelBook，并重写GetPrice方法。
 
 ```go
 type OffNovelBook struct {
@@ -158,9 +160,9 @@ func (n *OffNovelBook) GetPrice() int {
 }
 ```
 
-### Liskov Substitution Principle - 里氏替换原则
+### 里氏替换原则
 
-里氏替换原则：如果S是T的子类型，则类型T的对象可以替换为类型S的对象，而不会破坏程序。在Go开发中，里氏替换原则可以通过接口来实现。
+>里氏替换原则：如果S是T的子类型，则类型T的对象可以替换为类型S的对象，而不会破坏程序。在Go开发中，里氏替换原则可以通过接口来实现。
 
 例如，以下是一个符合里氏替换原则的代码段：
 
@@ -191,9 +193,9 @@ func Write(rw ReadWriter, p []byte) (int, error) {
 }
 ```
 
-### Dependency Inversion Principle - 依赖倒置原则
+### 依赖倒置原则
 
-依赖倒置原则：依赖于抽象而不是一个实例，其本质是要面向接口编程，不要面向实现编程。
+>依赖倒置原则：依赖于抽象而不是一个实例，其本质是要面向接口编程，不要面向实现编程。
 
 以下是一个符合依赖倒置原则的代码段：
 
@@ -238,9 +240,9 @@ func (BMW) Run() {
 
 上述代码中，IDriver接口的Drive方法，依赖于ICar接口，而不是某一具体的汽车类型。这样司机就可以开不同的汽车。
 
-### Interface Segregation Principle - 接口隔离原则
+### 接口隔离原则
 
-接口隔离原则：客户端程序不应该依赖它不需要的方法。
+>接口隔离原则：客户端程序不应该依赖它不需要的方法。
 
 例如，我们通过Save函数将文档保存到磁盘：
 
