@@ -1,7 +1,7 @@
 const plugins = require('./config/plugins')
 
 module.exports = {
-  title: "何小进童鞋",
+  title: "何小进童鞋个人学习笔记",
   description: '个人博客',
   dest: 'public',
   head: [
@@ -91,6 +91,8 @@ module.exports = {
     authorAvatar: '/avatar.png',
     // 备案号
     record: '皖ICP备2022000616号-1',
+    // 备案号链接
+    recordLink: 'https://beian.miit.gov.cn/',
     // 项目开始时间
     startYear: '2022',
     /**
