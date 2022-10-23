@@ -27,13 +27,6 @@ module.exports = {
       { text: '首页', link: '/', icon: 'reco-home' },
       { text: '时间轴', link: '/timeline/', icon: 'reco-date' },
       {
-        text: '文档',
-        icon: 'reco-message',
-        items: [
-          { text: 'vuepress-reco', link: '/docs/' }
-        ]
-      },
-      {
         text: '关于我',
         icon: 'reco-message',
         items: [
