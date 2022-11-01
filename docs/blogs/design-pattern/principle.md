@@ -1,5 +1,5 @@
 ---
-title: 设计模式-SOLID原则
+title: 设计原则
 date: 2022-10-15
 tags:
  - Go
@@ -8,9 +8,9 @@ categories:
  -  设计模式
 ---
 
-【转】[原文链接](https://github.com/marmotedu/geekbang-go/blob/master/SOLID%E5%8E%9F%E5%88%99%E4%BB%8B%E7%BB%8D.md)
-
 <!-- more -->
+
+
 
 ## SOLID原则
 SOLID原则是由罗伯特·C·马丁在21世纪早期引入，指代了面向对象编程和面向对象设计的五个基本原则。遵循SOLID原则可以确保我们设计的代码是易维护、易扩展、易阅读的。SOLID原则同样也适用于Go程序设计。具体SOLID编码原则见下表：
@@ -270,3 +270,24 @@ func Save(w io.Writer, doc *Document) error
 ```
 
 `func Save(w io.Writer, doc *Document) error`就是最终的符合接口隔离原则的函数。
+
+## DRY原则
+>DRY: Don't Repeat Yourself，不要重复自己，即不要写重复的代码
+
+## KISS原则
+>KISS: Keep It Simple,Stupid，尽量保持简单
+
+## YANGI原则
+>YANGI: You Ain't Gonna Need It，你不会需要它，即不要过度设计
+
+## LOD原则
+>LOD: Law of Demeter,迪米特法则。或者称为：The Least Knowledge Principle，最小知识原则。
+
+英文定义如下：
+>Each unit should have only limited knowledge about other units: only units “closely” related to the current unit. Or: Each unit should only talk to its friends; Don’t talk to strangers.
+
+中文翻译：
+>每个模块（unit）只应该了解那些与它关系密切的模块（units: only units “closely” related to the current unit）的有限知识（knowledge）。或者说，每个模块只和自己的朋友“说话”（talk），不和陌生人“说话”（talk）。
+
+总结：
+>不该有直接依赖关系的类之间，不要有依赖；有依赖关系的类之间，尽量只依赖必要的接口（也就是定义中的“有限知识”）。
