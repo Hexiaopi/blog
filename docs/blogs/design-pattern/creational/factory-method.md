@@ -6,7 +6,6 @@ tags:
  - 设计模式
 categories:
  -  设计模式
-sticky: 4
 ---
 
 ![factory-method](https://refactoringguru.cn/images/patterns/content/factory-method/factory-method-zh-2x.png)

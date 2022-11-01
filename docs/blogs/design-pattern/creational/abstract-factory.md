@@ -6,7 +6,6 @@ tags:
  - 设计模式
 categories:
  -  设计模式
-sticky: 5
 ---
 
 ![abstract-factory](https://refactoringguru.cn/images/patterns/content/abstract-factory/abstract-factory-zh-2x.png)

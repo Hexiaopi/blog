@@ -6,7 +6,6 @@ tags:
  - 设计模式
 categories:
  -  设计模式
-sticky: 3
 ---
 
 

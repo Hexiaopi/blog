@@ -6,7 +6,6 @@ tags:
  - 设计模式
 categories:
  -  设计模式
-sticky: 2
 ---
 
 【转】[原文链接](https://github.com/marmotedu/geekbang-go/blob/master/SOLID%E5%8E%9F%E5%88%99%E4%BB%8B%E7%BB%8D.md)
