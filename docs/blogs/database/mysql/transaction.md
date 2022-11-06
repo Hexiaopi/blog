@@ -22,44 +22,44 @@ categories:
 - 锁/MVCC：实现事务的隔离性；
 - 以上三者保证了事务的一致性；
 
-## 事务的隔离级别
+## 并发事务带来的问题
 
 当数据库上有多个事务同时执行的时候，就可能出现**脏读(dirty read)**、**不可重复读(non-repeatable read)**、**幻读(phantom read)**，为了解决这些问题，就有了隔离级别的概念
 
-1. 脏读问题
+### 脏读问题
 > 脏读是指：一个事务中访问到了另外一个事务未提交的数据
 
 ![dirty-read](./images/dirty-read.png)
 
-2. 不可重复读问题
+### 不可重复读问题
 > 不可重复读是指：一个事务查询同一条记录2次，得到的结果不一致
 
 ![non-repeatable-read](./images/non-repeatable-read.png)
 
-3. 幻读问题
+### 幻读问题
 > 幻读是指：select操作得到的结果所表征的数据状态无法支撑后续的业务操作
 
 ![phantom-read](./images/phantom-read.png)
-
+## 事务的隔离级别
 针对上面三种问题，分别有四种隔离级别：
 
-1. **未提交读(read uncommitted，RU)**
+### 未提交读(read uncommitted，RU)
 
 > 未提交读，是指一个事务还未提交时，它做的变更就能被别的事务看到。即**没有提交却可以读**
 
-2. **提交读(read committed，RC)**
+### 提交读(read committed，RC)
 
 > 提交读，是指一个事务提交之后，它做的变更才会被其他事务看到。即**提交才可以读**
 >
 :eyes: **大多数数据库系统的默认隔离级别**
 
-3. **可重复读(repeatable read，RR)**
+### 可重复读(repeatable read，RR)
 
 > 可重复度，是指同一个事务执行过程看到的数据，总是跟这个事务在启动时看到的数据是一致的。即同一个事务多次请求读取数据，会看到同样的数据行。
 >
 :eyes: **MySQL的默认隔离级别**
 
-4. **串行化(serializable，S)**
+### 串行化(serializable，S)
 
 > 是最高的隔离级别，它通过强制事务排序，使之不可能相互冲突。
 >
@@ -187,6 +187,8 @@ select * from table where ?；
 
 ### 当前读
 
+**幻读在当前读才有可能出现**，那么Innodb是如何防止幻读的呢，innodb提供了一个间隙锁的技术，行数结合间隙锁，达到最终目的。
+
 > 读取的是记录的最新版本，并且，当前读返回的记录，都会加上锁，保证其他事务不会再并发修改这条记录。
 
 特殊的读操作，以及插入、更新、删除操作都属于当前读，例如：
@@ -215,3 +217,66 @@ delete from table where ?;
 事务A在执行`select k from t where id=1;`才创建一致性视图，此时事务C已提交，因此k=2;
 
 同样事务B，事务C已提交，因此可见，且自己修改的肯定可见，因此k=3;
+
+## 那么MySQL可重复读解决幻读了吗？
+
+我们试验为例：
+
+假设存在表`dept`
+
+```
+mysql> desc dept;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int(10)     | NO   | PRI | NULL    |       |
+| value | varchar(32) | YES  |     |         |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+```
+
+开启两个事务进行试验
+
+|                            事务A                             |              事务B              |
+| :----------------------------------------------------------: | :-----------------------------: |
+|                      start transaction;                      |                                 |
+|                                                              |       start transaction;        |
+|         select * from dept;<br/>Empty set (0.01 sec)         |                                 |
+|                                                              | insert into dept values(1,'a'); |
+|         select * from dept;<br/>Empty set (0.01 sec)         |                                 |
+|                                                              |             commit;             |
+|         select * from dept;<br/>Empty set (0.01 sec)         |                                 |
+| insert into dept values(1,'a');<br/>Duplicate entry '1' for key 'PRIMARY' |                                 |
+
+事务A就很奇怪，明明查询不到数据，写入时却报主键重复错误:cry:(**幻读出现**)
+
+继续试验：
+
+|                            事务A                             |              事务B              |
+| :----------------------------------------------------------: | :-----------------------------: |
+|                      start transaction;                      |                                 |
+|                                                              |       start transaction;        |
+|                 select * from dept;<br/>1,a                  |                                 |
+|                                                              | insert into dept values(2,'b'); |
+|                 select * from dept;<br/>1,a                  |                                 |
+|                                                              |             commit;             |
+|                 select * from dept;<br/>1,a                  |                                 |
+| update dept set value='z';<br/>Query OK, 2 rows affected (0.00 sec) |                                 |
+
+事务A又奇怪了，明明只有一条数据，为啥影响了两条数据:sob:（**幻读出现**）
+
+那么MySQL如何解决幻读呢
+
+|                           事务A                            |                            事务B                             |
+| :--------------------------------------------------------: | :----------------------------------------------------------: |
+|                     start transaction;                     |                                                              |
+|                                                            |                      start transaction;                      |
+| select * from dept where id>=1 for update;<br/>1,z<br/>2,z |                                                              |
+|                                                            | insert into dept values(3,'c');<br/>Lock wait timeout exceeded; try restarting transaction |
+|            select * from dept;<br/>1,z<br/>2,z             |                                                              |
+|                                                            |                           commit;                            |
+|              insert into dept values(3,'c');               |                                                              |
+|                          commit;                           |                                                              |
+|        select * from dept;<br/>1,z<br/>2,z<br/>3,c         |                                                              |
+
+可以看到通过对`id>=1`加锁，成功解决幻读问题，但是如果在间隙锁之外进行数据操作，其实还是会出现幻读。因此MySQL可重复读隔离级别通过间隙锁部分解决幻读问题，并没有完全解决，如果要解决幻读问题只能使用串行化隔离级别。
