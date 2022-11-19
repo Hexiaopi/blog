@@ -2,9 +2,9 @@
 title: 基于Redis的分布式锁
 date: 2022-11-12
 tags:
- - go
- - lua
- - redis
+ - Go
+ - Lua
+ - Redis
 categories:
  - 系统设计
 ---
