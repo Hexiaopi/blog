@@ -3,6 +3,7 @@ title: 魔幻的iota枚举
 date: 2023-02-03
 tags:
  - Go
+ - 基础
 categories:
  -  Go语言
 ---

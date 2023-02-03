@@ -3,6 +3,7 @@ title: 常量
 date: 2022-05-03
 tags:
  - Go
+ - 基础
 categories:
  -  Go语言
 ---

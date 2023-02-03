@@ -109,6 +109,8 @@ module.exports = {
   plugins,
   markdown: {
     lineNumbers: true,
-    toc: { includeLevel: [1, 2, 3, 4] },
+    toc: {
+      includeLevel: [1, 2, 3, 4] //似乎没办法到第4层
+    }
   }
 }  
