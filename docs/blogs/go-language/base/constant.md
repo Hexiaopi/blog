@@ -71,7 +71,7 @@ const (
 
 规则：
 
-- 常量值必须是确定的，不能使用程序运行期间不确定的值
+- **常量值必须是确定的，不能使用程序运行期间不确定的值** :eyes:
 
   ```go
   const (
@@ -80,7 +80,7 @@ const (
   )
   ```
 
-- 常量的值在编译过程已确定，作为指令数据使用，没有内存分配
+- **常量的值在编译过程已确定，作为指令数据使用，没有内存分配** :bangbang:
 
   ```go
   package main
@@ -95,58 +95,3 @@ const (
   	fmt.Println(&x,x)		//编译不通过，获取不到地址
   }
   ```
-
-### 枚举
-
-> 枚举，一组常量值，通常用于限定值的范围。
-
-例如：
-
-```go
-const (
-	Sunday    = iota //0
-	Monday    = iota //1
-	Tuesday   = iota //2
-	Wednesday = iota //3
-	Thursday  = iota //4
-	Friday    = iota //5
-	Saturday  = iota //6
-)
-```
-
-:eyes:**规则说明：**
-
-- 常量组每定义一个常量**iota**就会自动递增1
-- 每遇到一个const关键字，iota就会重置为0
-- 如果按行递增（如上例所示），可省略后续的iota关键字
-- iota只跟常量组的行号有关，跟个数无关，即便是同一行，值也都一样
-
-```go
-package main
-
-import "fmt"
-
-const (
-	a = 'A'
-	b
-	c = iota //iota=2
-	d				 //iota=3
-)
-
-const (
-	e = 'E'
-	f = iota //iota=1
-)
-
-const (
-	g, h = iota, iota + 10 //0,10 (iota=0)
-	i, j                   //1,11 (iota=1)
-)
-
-func main() {
-	fmt.Println(a, b, c, d, e, f, g, h, i, j)
-}
-
-//输出
-//65 65 2 3 69 1 0 10 1 11
-```
