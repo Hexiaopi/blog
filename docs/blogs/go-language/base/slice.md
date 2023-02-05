@@ -82,7 +82,7 @@ fmt.Println(s, len(s), cap(s))  //[14 15 16 17] 4 7
 如果多个切片共用同一个底层数组,某个切片的操作对其他切片都是**可见的**<Badge text="注意" type="warning"/>
 :::
 
-## Append扩容
+## Append扩容原理
 ```go
 var s []int
 fmt.Println(len(s), cap(s)) // 0 0
@@ -108,8 +108,77 @@ Append在当前数组容量无法满足时，会分配新的数组，新的数�
 ::: danger 
 一旦底层数组容量无法满足某个切片的容量需求，该切片与底层数组关系就会**解除绑定**<Badge text="注意" type="warning"/>
 :::
+```go {6,15}
+package main
 
-## Apped操作
+import "fmt"
+
+func SliceRise(s []int) {
+	s = append(s, 0)
+	for i := range s {
+		s[i]++
+	}
+}
+
+func main() {
+	s1 := []int{1, 2}
+	s2 := s1
+	s2 = append(s2, 3)
+	SliceRise(s1)
+	SliceRise(s2)
+	fmt.Println(s1, len(s1), cap(s1)) //s1:[1,2]
+	fmt.Println(s2, len(s2), cap(s2)) //s2:[2,3,4,0]
+}
+```
+- 第15行，由于s2需要的存储空间超过s1的存储空间，因此重新申请了一块空间，至此s1和s2不再共享同一底层数组；
+- `SliceRise`函数第一步，进行扩容，由于s1传参的底层数组不满足存储空间，因此s切片和s1将不再共享同一空间，然而s2传参的底层数组满足存储空间，因此s切片和s2共享底层数据，因此对s切片的操作会影响到底层数据，进行影响s2；
+
+append扩容会重新分配底层数组并复制元素，当元素较多时，操作代价还是很大的。避免这种场景的方法是对切片的容量规模进行预估，并以cap参数的形式进行创建：`s:=make([]T, len, cap)`
+
+我们将未预估容量的append操作与预估容量的append操作进行压测如下：
+```go
+package main
+
+import (
+	"testing"
+)
+
+const size = 10000
+
+func BenchmarkSliceInitWithoutCap(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		s1 := make([]int, 0)
+		for i := 0; i < size; i++ {
+			s1 = append(s1, i)
+		}
+	}
+}
+
+func BenchmarkSliceInitWithCap(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		s1 := make([]int, 0, size)
+		for i := 0; i < size; i++ {
+			s1 = append(s1, i)
+		}
+	}
+}
+```
+其结果如下：
+```
+go test -benchmem -bench=. cap_benchmark_test.go 
+goos: darwin
+goarch: amd64
+cpu: Intel(R) Core(TM) i5-8259U CPU @ 2.30GHz
+BenchmarkSliceInitWithoutCap-8             18600             62965 ns/op          357625 B/op         19 allocs/op
+BenchmarkSliceInitWithCap-8                71695             15997 ns/op           81920 B/op          1 allocs/op
+PASS
+ok      command-line-arguments  3.630s
+```
+- 不带cap的append操作的平均性能是62965 ns/op，是带cap的append操作的`4`倍左右；
+- 不带cap的append操作每次操作分配357625B内存，而带cap的append操作仅分配81920B；
+- 不带cap的append操作平均每次分配19次内存，而带cap的append操作仅需一次内存分配；
+
+## Append操作
 
 和数组类似，可以使用`len()`和`cap()`函数获取切片的长度和容量。此外可以使用`append()`对切片追加元素，但`append()`远不止这个功能。
 
@@ -195,5 +264,3 @@ a = a[:len(a)-1]
 ```go
 a = a[:len(a)-N]
 ```
-
-
