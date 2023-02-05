@@ -110,7 +110,7 @@ module.exports = {
   markdown: {
     lineNumbers: true,
     toc: {
-      includeLevel: [1, 2, 3, 4] //似乎没办法到第4层
+      includeLevel: [1, 2, 3, 4]
     }
   }
 }  
