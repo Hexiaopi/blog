@@ -12,17 +12,11 @@ categories:
 
 **关键字定义：** string
 
-**零值：** “”
+**零值：** ""
 
 ```go
 var str string
 ```
-
-👣
-
-- 字符串的内容可以用类似数组下标的方式获取，例如str[0]，但与数组不同，字符串的内容初始化后不可修改，只能重新构造新的字符串，带来的好处是线程安全；
-- Go语言支持UTF-8格式编码，因此字符串中字符可以是ASCII字符，也可以是Unicode字符；
-- Go语言字符串可使用内置函数`len()`来计算ASCII字符的长度，可以使用`utf8.RuneCountInString()`来计算Unicode字符的长度；
 
 ## 操作
 
@@ -34,30 +28,104 @@ var str string
 | len(x) | 计算字符串长度 | len("Golang") |    6     |
 | str[i] |     取字符     |  "Golang"[3]  |    a     |
 
-## 遍历
-
-> 由于字符可以使用两种方式表示：
->
-> - `byte`来表示ASCII字符
-> - `rune`来表示Unicode字符
-> 
-> 因此Go字符串遍历也支持两种方式：`byte`和`rune`
-
-### byte遍历
-
+### 比较
+支持各种比较关系运算符: `==`、`!=`、`>=`、`<=`、`>`、`<`
 ```go
-for i := 0; i < len(str); i++ {
-	fmt.Println(i, string(str[i]))
+package main
+
+import "fmt"
+
+func main() {
+	// ==
+	s1 := "世界和平"
+	s2 := "世界" + "和平"
+	fmt.Println(s1 == s2) // true
+
+	// !=
+	s1 = "Go"
+	s2 = "C"
+	fmt.Println(s1 != s2) // true
+
+	// < and <=
+	s1 = "12345"
+	s2 = "23456"
+	fmt.Println(s1 < s2)  // true
+	fmt.Println(s1 <= s2) // true
+
+	// > and >=
+	s1 = "12345"
+	s2 = "123"
+	fmt.Println(s1 > s2)  // true
+	fmt.Println(s1 >= s2) // true
 }
 ```
 
-### rune遍历
+### 遍历
 
+::: tip
+Go语言支持UTF-8格式编码，因此字符串中字符可以是ASCII字符，也可以是Unicode字符
+- `byte`类型来表示ASCII字符
+- `rune`类型来表示Unicode字符
+:::
 ```go
-for i,s := range str{
-  fmt.Println(i, string(s))
-}
+str := "中国欢迎您"
 ```
+因此Go字符串遍历也支持两种方式：`byte`和`rune`
+#### byte遍历
+```go
+  str := "hello"
+	for i := 0; i < len(str); i++ {
+		fmt.Println(i, string(str[i]))
+	}
+  // 0 h
+  // 1 e
+  // 2 l
+  // 3 l
+  // 4 o
+```
+::: warning 
+由于UTF-8中，大多数中文字符都使用三字节表示，因此通过rune方式遍历中文字符串是不可取的<Badge text="注意" type="warning"/>
+:::
+```go
+	str := "你好"
+	for i := 0; i < len(str); i++ {
+		fmt.Println(i, string(str[i]))
+	}
+	// 0 ä
+	// 1 ½
+	// 2
+	// 3 å
+	// 4 ¥
+	// 5 ½
+```
+
+#### rune遍历
+::: tip
+rune实际上类型是int32，因此打印时展示的是数字类型
+:::
+```go
+  str := "hello"
+  for i,s := range str{
+    fmt.Println(i, string(s))
+  }
+  // 0 h
+  // 1 e
+  // 2 l
+  // 3 l
+  // 4 o
+```
+::: warning
+遍历中文字符索引的变化<Badge text="注意" type="warning"/>
+:::
+```go
+  str := "你好"
+  for i, v := range str {
+		fmt.Println(i, v, string(v))
+	}
+  //0 20320 你
+  //3 22909 好
+```
+
 
 ## 底层结构
 
@@ -71,9 +139,25 @@ type stringStruct struct {
 ```
 
 - str是指针，指向底层数据结构，其实是`[]byte`
-- len是字符串长度
+- len是字符串长度，因此len(s)是O(1)复杂度的操作
 
 因此传参是可以将字符串作为参数，而不必传字符串指针。
+::: warning
+字符串的内容可以用类似数组下标的方式获取，例如str[0]，但与数组不同，字符串的内容初始化后不可修改<Badge text="注意" type="warning"/>，只能重新构造新的字符串，带来的好处是线程安全
+:::
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var s string = "hello"
+	s1 := []byte(s)
+	s1[0] = 'z'
+	fmt.Println(s, string(s1)) //hello zello
+}
+```
+
 
 ## 字符串高效构造方式
 Go语言构造字符串的方式有：
@@ -84,8 +168,6 @@ Go语言构造字符串的方式有：
 - `bytes.Buffer`
 
 但哪种方法最为高效呢？
-
-### 构造函数
 ```go
 import (
 	"bytes"
@@ -154,7 +236,6 @@ func concatStringByBytesBufferWithInitSize(sl []string) string {
 	return b.String()
 }
 ```
-### 性能测试
 我们进行基准测试如下：
 ```go
 package concat
@@ -205,18 +286,23 @@ func BenchmarkConcatStringByBytesBufferWithInitSize(b *testing.B) {
 	}
 }
 ```
-### 测试结果
+测试结果
 ```
+go test -benchmem -bench=. concat.go concat_test.go 
 goos: darwin
 goarch: amd64
 cpu: Intel(R) Core(TM) i5-8259U CPU @ 2.30GHz
-BenchmarkConcatStringByOperator-8                       10788649                99.73 ns/op           80 B/op            2 allocs/op
-BenchmarkConcatStringBySprintf-8                         2642611               450.7 ns/op           176 B/op            8 allocs/op
-BenchmarkConcatStringByJoin-8                           21215736                54.73 ns/op           48 B/op            1 allocs/op
-BenchmarkConcatStringByStringsBuilder-8                 10769900               109.9 ns/op           112 B/op            3 allocs/op
-BenchmarkConcatStringByStringsBuilderWithInitSize-8     22048483                48.37 ns/op           64 B/op            1 allocs/op
-BenchmarkConcatStringByBytesBuffer-8                    12242702                81.83 ns/op          112 B/op            2 allocs/op
-BenchmarkConcatStringByBytesBufferWithInitSize-8        21283641                49.62 ns/op           48 B/op            1 allocs/op
+BenchmarkConcatStringByOperator-8                        9819921               118.6 ns/op            80 B/op          2 allocs/op
+BenchmarkConcatStringBySprintf-8                         2001465               596.3 ns/op           176 B/op          8 allocs/op
+BenchmarkConcatStringByJoin-8                           16353861                69.96 ns/op           48 B/op          1 allocs/op
+BenchmarkConcatStringByStringsBuilder-8                  8713630               134.5 ns/op           112 B/op          3 allocs/op
+BenchmarkConcatStringByStringsBuilderWithInitSize-8     19554391                60.47 ns/op           64 B/op          1 allocs/op
+BenchmarkConcatStringByBytesBuffer-8                    11406288               102.7 ns/op           112 B/op          2 allocs/op
+BenchmarkConcatStringByBytesBufferWithInitSize-8        18708632                62.37 ns/op           48 B/op          1 allocs/op
 PASS
-ok      command-line-arguments  9.156s
+ok      command-line-arguments  9.939s
 ```
+:eyes:
+- 预初始化的strings.Builder构建字符串效率最高
+- fmt.Sprintf性能最差
+- 未知字符串长度情况下使用strings.Join比较好
