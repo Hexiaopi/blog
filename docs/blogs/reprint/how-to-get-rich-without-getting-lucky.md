@@ -4,7 +4,7 @@ date: 2022-10-11
 tags:
  - 财富
 categories:
- -  财富
+ - 转载
 ---
 
 【转】[原文链接](https://github.com/fat-garage/how-to-get-rich-without-getting-lucky)
