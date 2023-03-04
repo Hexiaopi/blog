@@ -5,7 +5,7 @@ tags:
  - go
  - 安全
 categories:
- - go
+ - Go语言
 ---
 
 【转】[原文链接](https://github.com/Tencent/secguide)

@@ -5,7 +5,7 @@ tags:
  - go
  - 规范
 categories:
- - go
+ - Go语言
 ---
 
 【转】[原文链接](https://github.com/xxjwxc/uber_go_guide_cn)
