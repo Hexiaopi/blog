@@ -1,5 +1,5 @@
 ---
-title: 深入了解Go锁
+title: 深入了解Go锁原理
 date: 2023-03-11
 tags:
  - Go
@@ -151,3 +151,7 @@ type RWMutex struct{
 #### 写锁为什么不会被**饿死**？
 
 获取写锁期间，可能还有其他协程获取读锁，如果写锁一直等待所有的读操作结束，则很可能被**饿死**，RWMutex通过readerWait解决这个问题，当获取写锁时，会把readerCount复制到readerWait，用于标记排在写操作前面的读操作个数，读操作结束会递减readerCount的值，同时也会递减readerWait的值，当readerWait值为0时唤醒写操作。写操作结束后才会唤醒其他的读操作。
+
+## 参考资料
+
+[Go专家编程](https://book.douban.com/subject/35144587/)
