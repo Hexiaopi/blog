@@ -91,6 +91,85 @@ Mutex内部`state`表示如下：
 
 如果此时有两个协程，一个在加锁，另一个在解锁，在加锁的过程中可能处于自旋，此时会把`Woken`标记为1，用于告知解锁协程，不必释放信号量，它很快会拿到锁。
 
+### Mutex注意事项
+
+::: danger
+Mutex等sync中定义的结构类型首次使用后不应对其进行复制操作
+:::
+
+我们看一个示例：
+
+```go
+package main
+
+import (
+	"log"
+	"sync"
+	"time"
+)
+
+type foo struct {
+	n int
+	sync.Mutex
+}
+
+func main() {
+	f := foo{n: 17}
+
+	go func(f foo) {
+		for {
+			log.Println("g2: try to lock foo...")
+			f.Lock()
+			log.Println("g2: lock foo ok")
+			time.Sleep(3 * time.Second)
+			f.Unlock()
+			log.Println("g2: unlock foo ok")
+		}
+	}(f)
+
+	f.Lock()
+	log.Println("g1: lock foo ok")
+
+	// 在mutex首次使用后复制其值
+	go func(f foo) {
+		for {
+			log.Println("g3: try to lock foo...")
+			f.Lock()
+			log.Println("g3: lock foo ok")
+			time.Sleep(5 * time.Second)
+			f.Unlock()
+			log.Println("g3: unlock foo ok")
+		}
+	}(f)
+
+	time.Sleep(1000 * time.Second)
+	f.Unlock()
+	log.Println("g1: unlock foo ok")
+}
+```
+
+::: details 查看执行结果
+```
+2023/03/12 19:23:45 g1: lock foo ok
+2023/03/12 19:23:45 g2: try to lock foo...
+2023/03/12 19:23:45 g3: try to lock foo...
+2023/03/12 19:23:45 g2: lock foo ok
+2023/03/12 19:23:48 g2: unlock foo ok
+2023/03/12 19:23:48 g2: try to lock foo...
+2023/03/12 19:23:48 g2: lock foo ok
+2023/03/12 19:23:51 g2: unlock foo ok
+...
+```
+我们看到g3在加锁操作之后阻塞，而g2按照预期正常运行
+
+g2和g3的区别在于：
+
+- g2是在互斥锁首次使用之前创建
+- g3是在互斥锁执行完加锁操作之后创建，并且在创建g3的时候复制了foo实例
+:::
+
+sync包中类型的实例在被复制得到的副本后将脱离原实例的控制范围，因此推荐传指针的方式<Badge text="注意" type="warning"/>，保证使用的锁是同一实例。
+
 ## 读写锁 RWMutex
 
 ### RWMutex数据结构
