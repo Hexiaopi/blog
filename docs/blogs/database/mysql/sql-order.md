@@ -12,10 +12,9 @@ categories:
 <!-- more -->
 
 这张图与 SQL 查询的语义有关，让你知道一个查询会返回什么，并回答了以下这些问题：
+
 - 可以在 GROUP BY 之后使用 WHERE 吗？（不行，WHERE 是在 GROUP BY 之前！）
-
 - 可以对窗口函数返回的结果进行过滤吗？（不行，窗口函数是 SELECT 语句里，而 SELECT 是在 WHERE 和 GROUP BY 之后）
-
 - 可以基于 GROUP BY 里的东西进行 ORDER BY 吗？（可以，ORDER BY 基本上是在最后执行的，所以可以基于任何东西进行 ORDER BY）
 
 - LIMIT 是在什么时候执行？（在最后！）
