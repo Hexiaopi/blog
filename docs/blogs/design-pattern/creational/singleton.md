@@ -46,7 +46,7 @@ Go语言创建单例的办法
 3. sync.Once，在GetInstance方法中调用once.Do
 
 #### 示例1：Sync.Mutex
-```go {17,20}
+```go {15,18}
 package singleton
 
 import (
@@ -61,8 +61,6 @@ type single1 struct{}
 var singleInstance1 *single1
 
 func GetInstance1() *single1 {
-	lock.RLock()
-	lock.RUnlock()
 	if singleInstance1 == nil {
 		lock.Lock()
 		defer lock.Unlock()
@@ -79,8 +77,7 @@ func GetInstance1() *single1 {
 }
 ```
 其中：
- - 20行再次判断的原因是：如果多个goroutine通过第一次检查（17行），其中一个goroutine获得锁并初始化了instance示例，那么剩余的goroutine就不必在获得锁之后再去初始化实例了。
- - 15、16行增加读锁和释放读锁是为了避免数据竞争，可通过`--race`参数进行测试。
+ - 18行再次判断的原因是：如果多个goroutine通过第一次检查（15行），其中一个goroutine获得锁并初始化了instance示例，那么剩余的goroutine就不必在获得锁之后再去初始化实例了。
 
 使用示例如下：
 ```go
