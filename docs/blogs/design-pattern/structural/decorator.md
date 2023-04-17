@@ -86,22 +86,23 @@ func (c ConcreteDecortor2) execute() {
 使用示例
 
 ```go
-package decorator
-
 func ExampleComponent() {
 	c := ConcreteComponent{}
 	c.execute()
+	//c1扩展c的功能
 	var c1 ConcreteDecortor1
 	c1.Decorator.Decorator(c)
 	c1.execute()
+	//c2又扩展c1的功能
 	var c2 ConcreteDecortor2
-	c2.Decorator.Decorator(c)
+	c2.Decorator.Decorator(c1)
 	c2.execute()
 	// Output:
 	// concrete component execute
 	// concrete decortor1 add function
 	// concrete component execute
 	// concrete decortor2 add function
+	// concrete decortor1 add function
 	// concrete component execute
 }
 ```
