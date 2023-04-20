@@ -18,24 +18,6 @@ categories:
 
 ![代理模式](../images/proxy.png)
 
-### 使用场景
-
-代理设计模式是一种非常常见的设计模式，它通常用于以下场景：
-
-- 远程代理：当一个对象位于不同的地址空间（例如在不同的服务器上）时，为了让客户端能够访问该对象，可以使用远程代理来实现。
-
-- 虚拟代理：当一个对象的创建或者加载时需要很长时间，可以使用虚拟代理来延迟对象的加载或者创建，直到真正需要使用该对象时再进行加载或者创建。
-
-- 安全代理：当对一个对象的访问需要进行安全控制时，可以使用安全代理来控制对象的访问权限，例如在对象被访问时需要进行认证或授权等。
-
-- 缓存代理：当需要缓存一些计算结果时，可以使用缓存代理，以便在后续的访问中直接返回缓存的结果，避免重复计算。
-
-- 日志记录代理：在访问被代理对象的过程中，使用日志记录代理可以记录所有访问记录，以便于问题排查和系统优化等。
-
-- 延迟初始化代理：当一个对象的初始化很耗时时，可以使用延迟初始化代理来实现，将对象的初始化推迟到真正需要使用该对象时再进行初始化，避免浪费资源。
-
-总之，代理设计模式适用于很多场景，包括访问远程对象、控制访问权限、缓存计算结果、日志记录、延迟初始化等。因此，在实际开发中，可以根据具体的应用场景来选择使用代理设计模式。
-
 ### 角色
 
 - Subject: 抽象主题，通过接口或抽象类声明真实主题和代理对象实现的业务方法
@@ -104,6 +86,273 @@ func ExampleRequest() {
 
 - 由于客户端和真实主题之间增加了代理对象，因此有些类型的代理模式可能会造成请求的处理速度变慢
 - 实现代理模式需要额外的工作，有些代理模式的实现非常复杂
+
+### 使用场景
+
+代理设计模式是一种非常常见的设计模式，它通常用于以下场景：
+
+- 远程代理：当一个对象位于不同的地址空间（例如在不同的服务器上）时，为了让客户端能够访问该对象，可以使用远程代理来实现。
+
+- 虚拟代理：当一个对象的创建或者加载时需要很长时间，可以使用虚拟代理来延迟对象的加载或者创建，直到真正需要使用该对象时再进行加载或者创建。
+
+- 安全代理：当对一个对象的访问需要进行安全控制时，可以使用安全代理来控制对象的访问权限，例如在对象被访问时需要进行认证或授权等。
+
+- 缓存代理：当需要缓存一些计算结果时，可以使用缓存代理，以便在后续的访问中直接返回缓存的结果，避免重复计算。
+
+- 日志记录代理：在访问被代理对象的过程中，使用日志记录代理可以记录所有访问记录，以便于问题排查和系统优化等。
+
+#### 远程代理
+
+```go
+// Subject 接口定义
+type Subject interface {
+    Request() string
+}
+
+// RemoteSubject 结构体实现 Subject 接口
+type RemoteSubject struct {
+    URL string
+}
+
+func (rs *RemoteSubject) Request() string {
+    // 远程调用
+    response, err := http.Get(rs.URL)
+    if err != nil {
+        return "Error: " + err.Error()
+    }
+    defer response.Body.Close()
+    body, err := ioutil.ReadAll(response.Body)
+    if err != nil {
+        return "Error: " + err.Error()
+    }
+    return string(body)
+}
+
+// Proxy 结构体实现 Subject 接口，并在内部包含了一个 RemoteSubject 对象
+type Proxy struct {
+    subject *RemoteSubject
+}
+
+func (p *Proxy) Request() string {
+    // 在此处执行一些身份验证、日志记录等操作
+    if p.subject == nil {
+        p.subject = &RemoteSubject{
+            URL: "http://www.example.com",
+        }
+    }
+    return "Proxy -> " + p.subject.Request()
+}
+
+// client 代码
+func main() {
+    var subject Subject = &Proxy{}
+    result := subject.Request()
+    fmt.Println(result)
+}
+```
+
+通过这种方式，我们可以将客户端和远程对象之间的耦合度降低，增加了系统的可维护性和可扩展性。
+
+#### 虚拟代理
+
+```go
+// Image 接口定义
+type Image interface {
+    Display()
+}
+
+// RealImage 结构体实现 Image 接口
+type RealImage struct {
+    filename string
+}
+
+func (ri *RealImage) Display() {
+    fmt.Println("Displaying Real Image: ", ri.filename)
+}
+
+// Proxy 结构体实现 Image 接口，并在内部包含了一个 RealImage 对象
+type Proxy struct {
+    image *RealImage
+    filename string
+}
+
+func (p *Proxy) Display() {
+    // 使用虚拟代理，在真正需要使用 RealImage 对象时才进行创建和加载
+    if p.image == nil {
+        fmt.Println("Creating Real Image: ", p.filename)
+        p.image = &RealImage{
+            filename: p.filename,
+        }
+    }
+    p.image.Display()
+}
+
+// client 代码
+func main() {
+    var image Image = &Proxy{
+        filename: "example.jpg",
+    }
+    // 第一次调用 Display() 方法会创建和加载 RealImage 对象
+    image.Display()
+    // 第二次调用 Display() 方法直接使用已创建的 RealImage 对象
+    image.Display()
+}
+```
+
+通过这种方式，我们可以延迟 RealImage 对象的加载或者创建，直到客户端真正需要访问该对象时才进行加载或者创建，从而减少了系统的资源消耗，优化了系统的性能。
+
+#### 安全代理
+
+```go
+// Subject 接口定义
+type Subject interface {
+    Request()
+}
+
+// RealSubject 结构体实现 Subject 接口
+type RealSubject struct {
+    // RealSubject 对象需要进行身份认证或者授权等安全处理
+    Username string
+    Password string
+}
+
+func (rs *RealSubject) Request() {
+    fmt.Println("Request processed by Real Subject")
+}
+
+// Proxy 结构体实现 Subject 接口，并在内部包含了一个 RealSubject 对象
+type Proxy struct {
+    subject *RealSubject
+    username string
+    password string
+}
+
+func (p *Proxy) Authenticate() bool {
+    // 在此处执行身份认证等操作
+    if p.username == "admin" && p.password == "admin123" {
+        return true
+    }
+    return false
+}
+
+func (p *Proxy) Request() {
+    if p.subject == nil {
+        p.subject = &RealSubject{
+            Username: p.username,
+            Password: p.password,
+        }
+    }
+    // 在此处执行授权等操作
+    if p.Authenticate() {
+        p.subject.Request()
+    } else {
+        fmt.Println("Authorization failed!")
+    }
+}
+
+// client 代码
+func main() {
+    var subject Subject = &Proxy{
+        username: "admin",
+        password: "admin123",
+    }
+    subject.Request()
+}
+```
+
+我们通过认证和授权等操作来控制对 RealSubject 对象的访问权限，只有认证和授权成功之后才能访问 RealSubject 对象，否则返回授权失败的提示消息。通过这种方式，我们可以对系统中的访问进行更加细粒度的控制，增加了系统的安全性和鲁棒性。
+
+#### 缓存代理
+
+```go
+// Subject 接口定义
+type Subject interface {
+    Request(arg int) int
+}
+
+// RealSubject 结构体实现 Subject 接口
+type RealSubject struct{}
+
+func (rs *RealSubject) Request(arg int) int {
+    fmt.Println("Processing request with argument:", arg)
+    return arg * 2
+}
+
+// Proxy 结构体实现 Subject 接口，并在内部包含了一个 RealSubject 对象和一个缓存 map
+type Proxy struct {
+    subject *RealSubject
+    cache map[int]int
+}
+
+func (p *Proxy) Request(arg int) int {
+    // 尝试从缓存中获取结果
+    res, ok := p.cache[arg]
+    if ok {
+        fmt.Println("Return cached result:", res)
+        return res
+    }
+    // 如果缓存中没有结果，则使用 RealSubject 对象进行计算
+    if p.subject == nil {
+        p.subject = &RealSubject{}
+    }
+    res = p.subject.Request(arg)
+    // 将计算结果添加到缓存中，并返回结果
+    p.cache[arg] = res
+    return res
+}
+
+// client 代码
+func main() {
+    var subject Subject = &Proxy{
+        cache: make(map[int]int),
+    }
+    subject.Request(10) // 缓存中没有结果，RealSubject 进行计算并添加到缓存中
+    subject.Request(10) // 缓存中存在结果，直接返回缓存结果
+}
+```
+
+通过这种方式，我们可以减少一些需要重复计算的操作，优化了系统的性能，并且可以快速响应客户端的请求。
+
+#### 日志记录代理
+
+```go
+// Subject 接口定义
+type Subject interface {
+    Request()
+}
+
+// RealSubject 结构体实现 Subject 接口
+type RealSubject struct{}
+
+func (rs *RealSubject) Request() {
+    fmt.Println("Processing request...")
+}
+
+// Proxy 结构体实现 Subject 接口，并在内部包含了一个 RealSubject 对象和一个日志记录器
+type Proxy struct {
+    subject *RealSubject
+    logger *log.Logger
+}
+
+func (p *Proxy) Request() {
+    p.logger.Print("Calling Request method...")
+    if p.subject == nil {
+        p.subject = &RealSubject{}
+    }
+    p.subject.Request()
+    p.logger.Print("Request method finished.")
+}
+
+// client 代码
+func main() {
+    var subject Subject = &Proxy{
+        logger: log.New(os.Stdout, "", log.Ldate|log.Ltime),
+    }
+    subject.Request() // 记录 Request 方法的调用信息和结果信息
+}
+```
+
+通过这种方式，我们可以在系统中记录每一次对特定对象或方法的调用，以便后续系统调试或问题排查。
 
 ### 对比
 
