@@ -3,28 +3,34 @@ title: 设计模式-原型
 date: 2022-10-16
 tags:
  - Go
- - 设计模式
+ - 创建型模式
 categories:
- -  设计模式
+ - 设计模式
 ---
 
 ![prototype](https://refactoringguru.cn/images/patterns/content/prototype/prototype-2x.png)
 
 <!-- more -->
 
-## 原型模式
+[[toc]]
 
-> 原型模式(Prototype Pattern)用一个已经创建的实例作为原型，通过复制该原型对象来创建一个和原型相同或相似的新对象。
+## 什么是原型模式
 
-### 角色
+原型模式(Prototype Pattern)用一个已经创建的实例作为原型，通过复制该原型对象来创建一个和原型相同或相似的新对象。
 
-- 抽象原型：规定了具体原型对象必须实现的接口
-- 具体原型：实现抽象原型的clone()方法，是可被复制的对象
-- 访问：使用具体原型类中的clone()方法来复制新的对象
+### 包含哪些角色
 
-![原型模式](../images/prototype.png)
+![prototype](../images/prototype.png)
 
-### 示例
+- Prototype：抽象原型
+
+  抽象原型规定了clone()接口来复制新的对象
+
+- ConcretePrototype：具体原型
+
+  具体原型实现抽象原型的clone()方法，是可被复制的对象
+
+### 代码示例
 
 ```go
 package prototype
@@ -71,7 +77,9 @@ func (f *folder) clone() inode {
 	return cloneFolder
 }
 ```
+
 使用示例如下：
+
 ```go
 package prototype
 

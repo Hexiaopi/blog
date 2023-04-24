@@ -3,20 +3,24 @@ title: 设计模式-工厂方法
 date: 2022-10-15
 tags:
  - Go
- - 设计模式
+ - 创建型模式
 categories:
- -  设计模式
+ - 设计模式
 ---
 
 ![factory-method](https://refactoringguru.cn/images/patterns/content/factory-method/factory-method-zh-2x.png)
 
 <!-- more -->
 
-## 工厂方法模式
+[[toc]]
 
-> 工厂方法模式(Factory Method Pattern)也叫虚拟构造器(Virtual Constructor)模式，由于简单工厂模式违背了开闭原则，而工厂方法模式对简单工厂模式进一步抽象，其好处是可以使系统在不修改原来代码的情况下引进新的产品，即满足开闭原则。
+## 什么是工厂方法模式
 
-### 角色
+工厂方法模式(Factory Method Pattern)也叫虚拟构造器(Virtual Constructor)模式，由于简单工厂模式违背了开闭原则，而工厂方法模式对简单工厂模式进一步抽象，其好处是可以使系统在不修改原来代码的情况下引进新的产品，即满足开闭原则。
+
+### 包含哪些角色
+
+![工厂方法模式](../images/factory-method.png)
 
 - Abstract Factory：抽象工厂
 
@@ -34,9 +38,7 @@ categories:
 
   实现了抽象产品定义的接口，由具体工厂来创建，它同具体工厂之间一一对应。
 
-![工厂方法模式](../images/factory-method.png)
-
-### 示例
+### 代码示例
 
 ```go
 package factory_method
@@ -81,7 +83,9 @@ func (ConcreteFactory2) NewProduct() Product {
 	return &ConcreteProduct2{}
 }
 ```
+
 使用工厂创建产品示例如下：
+
 ```go
 package factory_method
 
@@ -104,6 +108,12 @@ func ExampleConcreteFactory2_NewProduct() {
 }
 ```
 
+### 应用场景
+
+例如：电视工厂有TCL电视工厂、海信电视工厂，我们只需要提供品牌名称，就可以获取对应工厂的电视。
+
+## 总结
+
 ### 优点
 
 - 用户只需要知道具体工厂的名称就可得到所要的产品，无须知道产品的具体创建过程。
@@ -116,13 +126,9 @@ func ExampleConcreteFactory2_NewProduct() {
 - 增加系统的抽象性和理解难度。
 - **抽象产品只能生产一种产品**。此弊端可使用抽象工厂模式解决。
 
-### 应用场景
-
-例如：电视工厂有TCL电视工厂、海信电视工厂，我们只需要提供品牌名称，就可以获取对应工厂的电视。
+## 对比
 
 ### 简单工厂和工厂方法
-
-简单工厂模式和工厂方法模式都是常见的创建型设计模式，它们的主要区别在于实现方式的不同。
 
 简单工厂模式是由一个工厂类负责创建所有产品的实例，客户端只需要告诉工厂要创建哪种产品，工厂就会返回相应的产品实例。简单工厂模式的优点是将创建实例的逻辑集中到了一个工厂类中，客户端不需要直接与具体产品类打交道，减少了客户端和产品类之间的依赖关系和耦合度。但是简单工厂模式的缺点是，一旦有新的产品添加到系统中，就需要修改工厂类的代码，违反了开闭原则。
 

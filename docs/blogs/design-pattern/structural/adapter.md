@@ -3,7 +3,7 @@ title: 设计模式-适配器
 date: 2022-10-18
 tags:
  - Go
- - 设计模式
+ - 结构型模式
 categories:
  -  设计模式
 ---
@@ -12,18 +12,28 @@ categories:
 
 <!-- more -->
 
-## 适配器模式
+[[toc]]
+
+## 什么是适配器模式
+
 > 适配器模式(Adapter Pattern)又叫包装器模式：将一个接口转换成客户希望的另一个接口，适配器模式使接口不兼容的那些类可以一起工作
+
+### 包含哪些角色
 
 ![适配器](../images/adapter.png)
 
-### 角色
+- Target: 目标角色
 
-- Target: 目标角色，该角色定义是我们期望的接口
-- Adapter: 适配器角色，将源角色转换为目标角色
+  该角色定义是我们期望的接口
+
+- Adapter: 适配器角色
+  
+  将源角色转换为目标角色
+
 - Adaptee: 源角色
 
-### 示例
+### 代码示例
+
 ```go
 package adapter
 
@@ -66,7 +76,9 @@ func NewAdapter(adaptee Adaptee) Target {
 	return &Adapter{Adaptee: adaptee}
 }
 ```
+
 使用示例如下：
+
 ```go
 package adapter
 
@@ -78,6 +90,8 @@ func ExampleRequest() {
 	// adapteeImpl SpecificRequest
 }
 ```
+
+## 总结
 
 ### 优点
 
