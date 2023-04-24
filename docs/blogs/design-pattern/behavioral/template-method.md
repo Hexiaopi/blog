@@ -5,7 +5,7 @@ tags:
  - Go
  - 行为型模式
 categories:
- -  设计模式
+ - 设计模式
 ---
 
 ![template-method](https://refactoringguru.cn/images/patterns/content/template-method/template-method-2x.png)

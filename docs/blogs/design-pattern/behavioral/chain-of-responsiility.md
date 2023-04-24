@@ -5,7 +5,7 @@ tags:
  - Go
  - 行为型模式
 categories:
- -  设计模式
+ - 设计模式
 ---
 
 ![责任链](https://refactoringguru.cn/images/patterns/content/chain-of-responsibility/chain-of-responsibility-2x.png)

@@ -5,7 +5,7 @@ tags:
  - Go
  - 结构型模式
 categories:
- -  设计模式
+ - 设计模式
 ---
 
 ![adapter](https://refactoringguru.cn/images/patterns/content/adapter/adapter-zh-2x.png)

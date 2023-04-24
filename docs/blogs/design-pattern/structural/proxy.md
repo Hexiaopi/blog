@@ -5,7 +5,7 @@ tags:
  - Go
  - 结构型模式
 categories:
- -  设计模式
+ - 设计模式
 ---
 
 ![proxy](https://refactoringguru.cn/images/patterns/content/proxy/proxy-2x.png)

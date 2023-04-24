@@ -5,7 +5,7 @@ tags:
  - Go
  - 行为型模式
 categories:
- -  设计模式
+ - 设计模式
 ---
 
 ![iterator](https://refactoringguru.cn/images/patterns/content/iterator/iterator-zh-2x.png)

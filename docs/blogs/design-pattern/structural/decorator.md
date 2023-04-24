@@ -5,7 +5,7 @@ tags:
  - Go
  - 结构型模式
 categories:
- -  设计模式
+ - 设计模式
 ---
 
 ![decorator](https://refactoringguru.cn/images/patterns/content/decorator/decorator-2x.png)
