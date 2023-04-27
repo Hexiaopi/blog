@@ -115,7 +115,7 @@ func ExampleCommand() {
 }
 ```
 
-### 适用场景
+## 适用场景
 
 - 需要将请求和执行操作解耦的情况。命令模式可以将请求封装为对象并将其发送给接收者，从而使得发送者和接收者之间松耦合。
 
@@ -128,6 +128,250 @@ func ExampleCommand() {
 - 需要将命令队列中的请求延迟、调度或者执行的情况。可以将命令对象存储在队列中，然后按照特定的规则执行它们。
 
 - 需要实现日志、审计或者事务记录的情况。可以在执行命令的同时，将其记录下来，并可以将其回放以重现历史操作。
+
+### 请求与执行解耦
+
+```go
+package command
+
+type Commander interface {
+	Execute()
+}
+
+type AddCommand struct {
+	receiver *Origin
+	value    int
+}
+
+func (c *AddCommand) Execute() {
+	c.receiver.Add(c.value)
+}
+
+type SubtractCommand struct {
+	receiver *Origin
+	value    int
+}
+
+func (c *SubtractCommand) Execute() {
+	c.receiver.Subtract(c.value)
+}
+
+type MultiplyCommand struct {
+	receiver *Origin
+	value    int
+}
+
+func (c *MultiplyCommand) Execute() {
+	c.receiver.Multiply(c.value)
+}
+
+type DivideCommand struct {
+	receiver *Origin
+	value    int
+}
+
+func (c *DivideCommand) Execute() {
+	c.receiver.Divide(c.value)
+}
+
+type Origin struct {
+	value int
+}
+
+func (r *Origin) Add(value int) {
+	r.value += value
+}
+
+func (r *Origin) Subtract(value int) {
+	r.value -= value
+}
+
+func (r *Origin) Multiply(value int) {
+	r.value *= value
+}
+
+func (r *Origin) Divide(value int) {
+	r.value /= value
+}
+
+type Computer struct {
+	commands []Commander
+}
+
+func (i *Computer) AddCommand(command Commander) {
+	i.commands = append(i.commands, command)
+}
+
+func (i *Computer) ExecuteCommands() {
+	for _, command := range i.commands {
+		command.Execute()
+	}
+}
+```
+
+使用示例
+
+```
+package command
+
+import "fmt"
+
+func ExampleComputer() {
+	computer := Computer{}
+	origin := Origin{10}
+	addCmd := AddCommand{&origin, 20}
+	subCmd := SubtractCommand{&origin, 15}
+	mulCmd := MultiplyCommand{&origin, 2}
+	divCmd := DivideCommand{&origin, 3}
+	computer.AddCommand(&addCmd)
+	computer.AddCommand(&subCmd)
+	computer.AddCommand(&mulCmd)
+	computer.AddCommand(&divCmd)
+	computer.ExecuteCommands()
+	fmt.Println(origin.value)
+	// Output:
+	// 10
+}
+```
+
+我们将请求者Computer和接收者Origin，进行了解耦。请求者可以任意追加命令，执行：加、减、乘、除等运算。
+
+### 撤销操作
+
+```go
+package command
+
+type Commander interface {
+	Execute()
+	Undo()
+}
+
+type AddCommand struct {
+	receiver *Origin
+	value    int
+}
+
+func (c *AddCommand) Execute() {
+	c.receiver.Add(c.value)
+}
+
+func (c *AddCommand) Undo() {
+	c.receiver.Subtract(c.value)
+}
+
+type SubtractCommand struct {
+	receiver *Origin
+	value    int
+}
+
+func (c *SubtractCommand) Execute() {
+	c.receiver.Subtract(c.value)
+}
+
+func (c *SubtractCommand) Undo() {
+	c.receiver.Add(c.value)
+}
+
+type MultiplyCommand struct {
+	receiver *Origin
+	value    int
+}
+
+func (c *MultiplyCommand) Execute() {
+	c.receiver.Multiply(c.value)
+}
+
+func (c *MultiplyCommand) Undo() {
+	c.receiver.Divide(c.value)
+}
+
+type DivideCommand struct {
+	receiver *Origin
+	value    int
+}
+
+func (c *DivideCommand) Execute() {
+	c.receiver.Divide(c.value)
+}
+
+func (c *DivideCommand) Undo() {
+	c.receiver.Multiply(c.value)
+}
+
+type Origin struct {
+	value int
+}
+
+func (r *Origin) Add(value int) {
+	r.value += value
+}
+
+func (r *Origin) Subtract(value int) {
+	r.value -= value
+}
+
+func (r *Origin) Multiply(value int) {
+	r.value *= value
+}
+
+func (r *Origin) Divide(value int) {
+	r.value /= value
+}
+
+type Computer struct {
+	commands []Commander
+}
+
+func (i *Computer) AddCommand(command Commander) {
+	i.commands = append(i.commands, command)
+}
+
+func (i *Computer) ExecuteCommands() {
+	for _, command := range i.commands {
+		command.Execute()
+	}
+}
+
+func (i *Computer) UndoLastCommand() {
+	if len(i.commands) > 0 {
+		cmd := i.commands[len(i.commands)-1]
+		cmd.Undo()
+		i.commands = i.commands[0 : len(i.commands)-1]
+	}
+}
+```
+
+使用示例
+
+```go
+func ExampleComputerUndo(){
+	computer := Computer{}
+	origin := Origin{10}
+	addCmd := AddCommand{&origin, 20}
+	subCmd := SubtractCommand{&origin, 15}
+	mulCmd := MultiplyCommand{&origin, 2}
+	divCmd := DivideCommand{&origin, 3}
+	computer.AddCommand(&addCmd)
+	computer.AddCommand(&subCmd)
+	computer.AddCommand(&mulCmd)
+	computer.AddCommand(&divCmd)
+	computer.ExecuteCommands()
+	fmt.Println(origin.value)
+	computer.UndoLastCommand()
+	fmt.Println(origin.value)
+	computer.UndoLastCommand()
+	fmt.Println(origin.value)
+	computer.UndoLastCommand()
+	fmt.Println(origin.value)
+	// Output:
+	// 10
+	// 30
+  // 15
+	// 30
+}
+```
+
+我们对Commonder接口增加Undo方法，即可以实现计算器的撤销操作。
 
 ## 总结
 
