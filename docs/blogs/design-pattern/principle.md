@@ -3,16 +3,17 @@ title: 设计原则
 date: 2022-10-15
 tags:
  - Go
- - 设计模式
+ - 设计原则
 categories:
- -  设计模式
+ - 设计模式
 ---
 
 <!-- more -->
 
-
+[[toc]]
 
 ## SOLID原则
+
 SOLID原则是由罗伯特·C·马丁在21世纪早期引入，指代了面向对象编程和面向对象设计的五个基本原则。遵循SOLID原则可以确保我们设计的代码是易维护、易扩展、易阅读的。SOLID原则同样也适用于Go程序设计。具体SOLID编码原则见下表：
 
 | 简写 | 全称                                | 中文描述     |
@@ -251,6 +252,7 @@ func Save(f *os.File, doc *Document) error
 ```
 
 上面的Save函数虽然能够完成任务，但有下面的问题：
+
 1. Save函数使用*os.File做为保存Document的文件，如果后面需要将Document保存到网络存储，Save函数就无法满足。
 2. 因为Save函数直接保存文档到磁盘，不方便后续的测试。
 3. *os.File包含了许多跟Save函数的方法，例如：读取路径以及检查路径是否是软连接等。
@@ -272,22 +274,25 @@ func Save(w io.Writer, doc *Document) error
 `func Save(w io.Writer, doc *Document) error`就是最终的符合接口隔离原则的函数。
 
 ## DRY原则
->DRY: Don't Repeat Yourself，不要重复自己，即不要写重复的代码
+
+>DRY: Don't Repeat Yourself，不要重复自己
+>
+>避免在代码中出现重复的逻辑和代码，可以通过封装来实现重复代码的复用。
 
 ## KISS原则
->KISS: Keep It Simple,Stupid，尽量保持简单
+
+>KISS: Keep It Simple,Stupid，尽可能简化代码
+>
+>不要使用过于复杂的算法和设计模式。
 
 ## YANGI原则
->YANGI: You Ain't Gonna Need It，你不会需要它，即不要过度设计
+
+>YANGI: You Ain't Gonna Need It，你不会需要它
+>
+>在编写代码时，不要过度设计，只保持足够的可扩展性，不要编写没有必要的代码。
 
 ## LOD原则
+
 >LOD: Law of Demeter,迪米特法则。或者称为：The Least Knowledge Principle，最小知识原则。
-
-英文定义如下：
->Each unit should have only limited knowledge about other units: only units “closely” related to the current unit. Or: Each unit should only talk to its friends; Don’t talk to strangers.
-
-中文翻译：
->每个模块（unit）只应该了解那些与它关系密切的模块（units: only units “closely” related to the current unit）的有限知识（knowledge）。或者说，每个模块只和自己的朋友“说话”（talk），不和陌生人“说话”（talk）。
-
-总结：
->不该有直接依赖关系的类之间，不要有依赖；有依赖关系的类之间，尽量只依赖必要的接口（也就是定义中的“有限知识”）。
+>
+>一个对象应该对其它对象有最少的了解。避免在代码中出现过多的依赖关系，可以通过使用接口和依赖注入等方式来实现。
