@@ -14,7 +14,7 @@ categories:
 
 [[toc]]
 
-# Go安全指南
+Go安全指南
 
 ## 通用类
 
@@ -184,6 +184,7 @@ func parse(lenControlByUser int, data []byte) ([]byte, error) {
 ```
 
 #### 1.1.5【必须】禁止SetFinalizer和指针循环引用同时使用
+
 - 当一个对象从被GC选中到移除内存之前，runtime.SetFinalizer()都不会执行，即使程序正常结束或者发生错误。由指针构成的“循环引用”虽然能被GC正确处理，但由于无法确定Finalizer依赖顺序，从而无法调用runtime.SetFinalizer()，导致目标对象无法变成可达状态，从而造成内存无法被回收。
 
 ```go
@@ -212,6 +213,7 @@ func main() {
 ```
 
 #### 1.1.6【必须】禁止重复释放channel
+
 - 重复释放一般存在于异常流程判断中，如果恶意攻击者构造出异常条件使程序重复释放channel，则会触发运行时panic，从而造成DoS攻击。
 
 ```go
@@ -240,6 +242,7 @@ func foo(c chan int) {
 ```
 
 #### 1.1.7【必须】确保每个协程都能退出
+
 - 启动一个协程就会做一个入栈操作，在系统不退出的情况下，协程也没有设置退出条件，则相当于协程失去了控制，它占用的资源无法回收，可能会导致内存泄露。
 
 ```go
@@ -253,6 +256,7 @@ func doWaiter(name string, second int) {
 ```
 
 #### 1.1.8【推荐】不使用unsafe包
+
 - 由于unsafe包绕过了 Golang 的内存安全原则，一般来说使用该库是不安全的，可导致内存破坏，尽量避免使用该包。若必须要使用unsafe操作指针，必须做好安全校验。
 
 ```go
@@ -304,6 +308,7 @@ func unsafePointer() {
 ### 1.2 文件操作
 
 #### 1.2.1【必须】 路径穿越检查
+
 - 在进行文件操作时，如果对外部传入的文件名未做限制，可能导致任意文件读取或者任意文件写入，严重可能导致代码执行。
 
 ```go
@@ -359,7 +364,8 @@ ioutil.WriteFile(p, []byte("present"), 0640)
 
 ### 1.3 系统接口
 
-**1.3.1【必须】命令执行检查**
+#### 1.3.1【必须】命令执行检查
+
 - 使用`exec.Command`、`exec.CommandContext`、`syscall.StartProcess`、`os.StartProcess`等函数时，第一个参数（path）直接取外部输入值时，应使用白名单限定可执行的命令范围，不允许传入`bash`、`cmd`、`sh`等命令；
 - 使用`exec.Command`、`exec.CommandContext`等函数时，通过`bash`、`cmd`、`sh`等创建shell，-c后的参数（arg）拼接外部输入，应过滤\n  $  &  ;  |  '  "  ( )  `等潜在恶意字符；
 
@@ -463,10 +469,12 @@ func doAuthReq(authReq *http.Request) *http.Response {
 ### 1.5 敏感数据保护
 
 #### 1.5.1【必须】敏感信息访问
+
 - 禁止将敏感信息硬编码在程序中，既可能会将敏感信息暴露给攻击者，也会增加代码管理和维护的难度
 - 使用配置中心系统统一托管密钥等敏感信息
 
 #### 1.5.2【必须】敏感数据输出
+
 - 只输出必要的最小数据集，避免多余字段暴露引起敏感信息泄露
 - 不能在日志保存密码（包括明文密码和密文密码）、密钥和其它敏感信息
 - 对于必须输出的敏感信息，必须进行合理脱敏展示
@@ -503,6 +511,7 @@ func serve1() {
 - 避免通过GET方法、代码注释、自动填充、缓存等方式泄露敏感信息
 
 #### 1.5.3【必须】敏感数据存储
+
 - 敏感数据应使用SHA2、RSA等算法进行加密存储
 - 敏感数据应使用独立的存储层，并在访问层开启访问控制
 - 包含敏感信息的临时文件或缓存一旦不再需要应立刻删除
@@ -531,6 +540,7 @@ dlv debug test.go
 ### 1.6 加密解密
 
 #### 1.6.1【必须】不得硬编码密码/密钥
+
 - 在进行用户登陆，加解密算法等操作时，不得在代码里硬编码密钥或密码，可通过变换算法或者配置等方式设置密码或者密钥。
 
 ```go
@@ -570,7 +580,7 @@ func AesEncrypt(plaintext string) (string, error) {
 
 - 在使用加密算法时，不建议使用加密强度较弱的算法。
 
-```
+```text
 // bad
 crypto/des，crypto/md5，crypto/sha1，crypto/rc4等。
 
@@ -690,9 +700,9 @@ func handlerGood(db *sql.DB, req *http.Request) {
 }
 ```
 
-
 ### 1.3 网络请求
-####  1.3.1【必须】资源请求过滤验证
+
+#### 1.3.1【必须】资源请求过滤验证
 
 - 使用`"net/http"`下的方法`http.Get(url)`、`http.Post(url, contentType, body)`、`http.Head(url)`、`http.PostForm(url, data)`、`http.Do(req)`时，如变量值外部可控（指从参数中动态获取），应对请求目标进行严格的安全校验。
 
@@ -706,7 +716,7 @@ func handlerGood(db *sql.DB, req *http.Request) {
 
   - 第 4 步、检查IP地址是否为内网IP，网段有：
 
-    ```
+    ```text
     // 以RFC定义的专有网络为例，如有自定义私有网段亦应加入禁止访问列表。
     10.0.0.0/8
     172.16.0.0/12
@@ -748,6 +758,7 @@ func main() {
 ```
 
 ### 1.4 服务器端渲染
+
 #### 1.4.1【必须】模板渲染过滤验证
 
 - 使用`text/template`或者`html/template`渲染模板时禁止将外部输入参数引入模板，或仅允许引入白名单内字符。
@@ -810,6 +821,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 ```
 
 ### 1.5 Web跨域
+
 #### 1.5.1【必须】跨域资源共享CORS限制请求来源
 
 - CORS请求保护不当可导致敏感信息泄漏，因此应当严格设置Access-Control-Allow-Origin使用同源策略进行保护。
@@ -835,7 +847,7 @@ handler = c.Handler(handler)
 #### 1.6.2 【必须】添加安全响应头
 
 - 所有接口、页面，添加响应头 `X-Content-Type-Options: nosniff`。
-- 所有接口、页面，添加响应头`X-Frame-Options `。按需合理设置其允许范围，包括：`DENY`、`SAMEORIGIN`、`ALLOW-FROM origin`。用法参考：[MDN文档](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/X-Frame-Options)
+- 所有接口、页面，添加响应头`X-Frame-Options`。按需合理设置其允许范围，包括：`DENY`、`SAMEORIGIN`、`ALLOW-FROM origin`。用法参考：[MDN文档](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/X-Frame-Options)
 
 #### 1.6.3【必须】外部输入拼接到HTTP响应头中需进行过滤
 
@@ -863,6 +875,7 @@ func outtemplate(w http.ResponseWriter, r *http.Request) {
 #### 1.7.1【必须】安全维护session信息
 
 - 用户登录时应重新生成session，退出登录后应清理session。
+
 ```go
 import (
 	"github.com/gorilla/handlers"
@@ -988,6 +1001,7 @@ func main() {
 #### 1.9.2【必须】禁止并发写map
 
 - 并发写map容易造成程序崩溃并异常退出，建议加锁保护
+
 ```go
 // bad
 func main() {
@@ -1006,6 +1020,7 @@ func main() {
 	select {}
 }
 ```
+
 #### 1.9.3【必须】确保并发安全
 
 敏感操作如果未作并发安全限制，可导致数据读写异常，造成业务逻辑限制被绕过。可通过同步锁或者原子操作进行防护。
@@ -1039,6 +1054,7 @@ func main() {
 	}
 }
 ```
+
 - 使用`sync/atomic`执行原子操作
 
 ```go

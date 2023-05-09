@@ -24,7 +24,7 @@ var <variable_name> [variable_type]
 
 例如：
 
-```
+```go
 var x int			//自动初始化int的零值即0
 var y = false //编译器自动推断为bool类型，并赋值为false
 ```
@@ -53,7 +53,7 @@ count := 10 //编译器自动推断为int类型
 x,y := 0,1	//多个变量同时定义
 ```
 
-:eyes: 
+:eyes:
 
 - 必须给变量相同数量的值，由编译器推断类型
 
@@ -83,7 +83,7 @@ x,y := 0,1	//多个变量同时定义
 
 > 匿名变量是以下划线`_`声明的，通常用于多值返回时忽略某个值
 
-```
+```go
 result,_ := json.Marshal(s) //忽略err
 ```
 
@@ -169,4 +169,3 @@ func (r *Request) Cookie(name string) (*Cookie, error) {
 	return nil, ErrNoCookie
 }
 ```
-

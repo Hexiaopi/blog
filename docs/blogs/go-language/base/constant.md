@@ -17,7 +17,7 @@ categories:
 
 #### 一个常量
 
-```
+```go
 const <constant_name> [constant_type] = <赋值表达式>
 ```
 
@@ -96,3 +96,4 @@ const (
   	fmt.Println(&x,x)		//编译不通过，获取不到地址
   }
   ```
+  

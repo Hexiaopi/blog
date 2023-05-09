@@ -12,7 +12,7 @@ categories:
 
 <!-- more -->
 
-# Uber Go 语言编码规范
+Uber Go 语言编码规范
 
  [Uber](https://www.uber.com/) 是一家美国硅谷的科技公司，也是 Go 语言的早期 adopter。其开源了很多 golang 项目，诸如被 Gopher 圈熟知的 [zap](https://github.com/uber-go/zap)、[jaeger](https://github.com/jaegertracing/jaeger) 等。2018 年年末 Uber 将内部的 [Go 风格规范](https://github.com/uber-go/guide) 开源到 GitHub，经过一年的积累和更新，该规范已经初具规模，并受到广大 Gopher 的关注。本文是该规范的中文版本。本版本会根据原版实时更新。
 
@@ -24,82 +24,81 @@ categories:
 
 ## 目录
 
-- [Uber Go 语言编码规范](#uber-go-语言编码规范)
-  - [版本](#版本)
-  - [目录](#目录)
-  - [介绍](#介绍)
-  - [指导原则](#指导原则)
-    - [指向 interface 的指针](#指向-interface-的指针)
-    - [Interface 合理性验证](#interface-合理性验证)
-    - [接收器 (receiver) 与接口](#接收器-receiver-与接口)
-    - [零值 Mutex 是有效的](#零值-mutex-是有效的)
-    - [在边界处拷贝 Slices 和 Maps](#在边界处拷贝-slices-和-maps)
-      - [接收 Slices 和 Maps](#接收-slices-和-maps)
-      - [返回 slices 或 maps](#返回-slices-或-maps)
-    - [使用 defer 释放资源](#使用-defer-释放资源)
-    - [Channel 的 size 要么是 1，要么是无缓冲的](#channel-的-size-要么是-1要么是无缓冲的)
-    - [枚举从 1 开始](#枚举从-1-开始)
-    - [使用 time 处理时间](#使用-time-处理时间)
-      - [使用 `time.Time` 表达瞬时时间](#使用-timetime-表达瞬时时间)
-      - [使用 `time.Duration` 表达时间段](#使用-timeduration-表达时间段)
-      - [对外部系统使用 `time.Time` 和 `time.Duration`](#对外部系统使用-timetime-和-timeduration)
-    - [Errors](#errors)
-      - [错误类型](#错误类型)
-      - [错误包装](#错误包装)
-      - [错误命名](#错误命名)
-    - [处理断言失败](#处理断言失败)
-    - [不要使用 panic](#不要使用-panic)
-    - [使用 go.uber.org/atomic](#使用-gouberorgatomic)
-    - [避免可变全局变量](#避免可变全局变量)
-    - [避免在公共结构中嵌入类型](#避免在公共结构中嵌入类型)
-    - [避免使用内置名称](#避免使用内置名称)
-    - [避免使用 `init()`](#避免使用-init)
-    - [追加时优先指定切片容量](#追加时优先指定切片容量)
-    - [主函数退出方式 (Exit)](#主函数退出方式-exit)
-      - [一次性退出](#一次性退出)
-    - [在序列化结构中使用字段标记](#在序列化结构中使用字段标记)
-    - [不要一劳永逸地使用 goroutine](#不要一劳永逸地使用-goroutine)
-      - [等待 goroutines 退出](#等待-goroutines-退出)
-      - [不要在 `init()` 使用 goroutines](#不要在-init-使用-goroutines)
-  - [性能](#性能)
-    - [优先使用 strconv 而不是 fmt](#优先使用-strconv-而不是-fmt)
-    - [避免字符串到字节的转换](#避免字符串到字节的转换)
-    - [指定容器容量](#指定容器容量)
-      - [指定 Map 容量提示](#指定-map-容量提示)
-      - [指定切片容量](#指定切片容量)
-  - [规范](#规范)
-    - [避免过长的行](#避免过长的行)
-    - [一致性](#一致性)
-    - [相似的声明放在一组](#相似的声明放在一组)
-    - [import 分组](#import-分组)
-    - [包名](#包名)
-    - [函数名](#函数名)
-    - [导入别名](#导入别名)
-    - [函数分组与顺序](#函数分组与顺序)
-    - [减少嵌套](#减少嵌套)
-    - [不必要的 else](#不必要的-else)
-    - [顶层变量声明](#顶层变量声明)
-    - [对于未导出的顶层常量和变量，使用\_作为前缀](#对于未导出的顶层常量和变量使用_作为前缀)
-    - [结构体中的嵌入](#结构体中的嵌入)
-    - [本地变量声明](#本地变量声明)
-    - [nil 是一个有效的 slice](#nil-是一个有效的-slice)
-    - [缩小变量作用域](#缩小变量作用域)
-    - [避免参数语义不明确 (Avoid Naked Parameters)](#避免参数语义不明确-avoid-naked-parameters)
-    - [使用原始字符串字面值，避免转义](#使用原始字符串字面值避免转义)
-    - [初始化结构体](#初始化结构体)
-      - [使用字段名初始化结构](#使用字段名初始化结构)
-      - [省略结构中的零值字段](#省略结构中的零值字段)
-      - [对零值结构使用 `var`](#对零值结构使用-var)
-      - [初始化 Struct 引用](#初始化-struct-引用)
-    - [初始化 Maps](#初始化-maps)
-    - [字符串 string format](#字符串-string-format)
-    - [命名 Printf 样式的函数](#命名-printf-样式的函数)
-  - [编程模式](#编程模式)
-    - [表驱动测试](#表驱动测试)
-    - [功能选项](#功能选项)
-  - [Linting](#linting)
-    - [Lint Runners](#lint-runners)
-  - [Stargazers over time](#stargazers-over-time)
+- [版本](#版本)
+- [目录](#目录)
+- [介绍](#介绍)
+- [指导原则](#指导原则)
+  - [指向 interface 的指针](#指向-interface-的指针)
+  - [Interface 合理性验证](#interface-合理性验证)
+  - [接收器 (receiver) 与接口](#接收器-receiver-与接口)
+  - [零值 Mutex 是有效的](#零值-mutex-是有效的)
+  - [在边界处拷贝 Slices 和 Maps](#在边界处拷贝-slices-和-maps)
+    - [接收 Slices 和 Maps](#接收-slices-和-maps)
+    - [返回 slices 或 maps](#返回-slices-或-maps)
+  - [使用 defer 释放资源](#使用-defer-释放资源)
+  - [Channel 的 size 要么是 1，要么是无缓冲的](#channel-的-size-要么是-1要么是无缓冲的)
+  - [枚举从 1 开始](#枚举从-1-开始)
+  - [使用 time 处理时间](#使用-time-处理时间)
+    - [使用 `time.Time` 表达瞬时时间](#使用-timetime-表达瞬时时间)
+    - [使用 `time.Duration` 表达时间段](#使用-timeduration-表达时间段)
+    - [对外部系统使用 `time.Time` 和 `time.Duration`](#对外部系统使用-timetime-和-timeduration)
+  - [Errors](#errors)
+    - [错误类型](#错误类型)
+    - [错误包装](#错误包装)
+    - [错误命名](#错误命名)
+  - [处理断言失败](#处理断言失败)
+  - [不要使用 panic](#不要使用-panic)
+  - [使用 go.uber.org/atomic](#使用-gouberorgatomic)
+  - [避免可变全局变量](#避免可变全局变量)
+  - [避免在公共结构中嵌入类型](#避免在公共结构中嵌入类型)
+  - [避免使用内置名称](#避免使用内置名称)
+  - [避免使用 `init()`](#避免使用-init)
+  - [追加时优先指定切片容量](#追加时优先指定切片容量)
+  - [主函数退出方式 (Exit)](#主函数退出方式-exit)
+    - [一次性退出](#一次性退出)
+  - [在序列化结构中使用字段标记](#在序列化结构中使用字段标记)
+  - [不要一劳永逸地使用 goroutine](#不要一劳永逸地使用-goroutine)
+    - [等待 goroutines 退出](#等待-goroutines-退出)
+    - [不要在 `init()` 使用 goroutines](#不要在-init-使用-goroutines)
+- [性能](#性能)
+  - [优先使用 strconv 而不是 fmt](#优先使用-strconv-而不是-fmt)
+  - [避免字符串到字节的转换](#避免字符串到字节的转换)
+  - [指定容器容量](#指定容器容量)
+    - [指定Map容量提示](#指定map容量提示)
+    - [指定切片容量](#指定切片容量)
+- [规范](#规范)
+  - [避免过长的行](#避免过长的行)
+  - [一致性](#一致性)
+  - [相似的声明放在一组](#相似的声明放在一组)
+  - [import 分组](#import-分组)
+  - [包名](#包名)
+  - [函数名](#函数名)
+  - [导入别名](#导入别名)
+  - [函数分组与顺序](#函数分组与顺序)
+  - [减少嵌套](#减少嵌套)
+  - [不必要的 else](#不必要的-else)
+  - [顶层变量声明](#顶层变量声明)
+  - [对于未导出的顶层常量和变量，使用\_作为前缀](#对于未导出的顶层常量和变量使用_作为前缀)
+  - [结构体中的嵌入](#结构体中的嵌入)
+  - [本地变量声明](#本地变量声明)
+  - [nil 是一个有效的 slice](#nil-是一个有效的-slice)
+  - [缩小变量作用域](#缩小变量作用域)
+  - [避免参数语义不明确 (Avoid Naked Parameters)](#避免参数语义不明确-avoid-naked-parameters)
+  - [使用原始字符串字面值，避免转义](#使用原始字符串字面值避免转义)
+  - [初始化结构体](#初始化结构体)
+    - [使用字段名初始化结构](#使用字段名初始化结构)
+    - [省略结构中的零值字段](#省略结构中的零值字段)
+    - [对零值结构使用 `var`](#对零值结构使用-var)
+    - [初始化 Struct 引用](#初始化-struct-引用)
+  - [初始化 Maps](#初始化-maps)
+  - [字符串 string format](#字符串-string-format)
+  - [命名 Printf 样式的函数](#命名-printf-样式的函数)
+- [编程模式](#编程模式)
+  - [表驱动测试](#表驱动测试)
+  - [功能选项](#功能选项)
+- [Linting](#linting)
+  - [Lint Runners](#lint-runners)
+- [Stargazers over time](#stargazers-over-time)
 
 ## 介绍
 
@@ -972,13 +971,13 @@ if err != nil {
 
 </td></tr><tr><td>
 
-```
+```text
 failed to x: failed to y: failed to create new store: the error
 ```
 
 </td><td>
 
-```
+```text
 x: y: new store: the error
 ```
 
@@ -989,7 +988,8 @@ x: y: new store: the error
 
 另见 [不要只检查错误，优雅地处理它们]。
 
-[`"pkg/errors".Cause`]: https://godoc.org/github.com/pkg/errors#Cause
+["pkg/errors".Cause]: https://godoc.org/github.com/pkg/errors#Cause
+
 [不要只检查错误，优雅地处理它们]: https://dave.cheney.net/2016/04/27/dont-just-check-errors-handle-them-gracefully
 
 #### 错误命名
@@ -1593,13 +1593,13 @@ for n := 0; n < b.N; n++ {
 </td></tr>
 <tr><td>
 
-```
+```text
 BenchmarkBad-4    100000000    2.48s
 ```
 
 </td><td>
 
-```
+```text
 BenchmarkGood-4   100000000    0.21s
 ```
 
@@ -1986,13 +1986,13 @@ for i := 0; i < b.N; i++ {
 </td></tr>
 <tr><td>
 
-```
+```text
 BenchmarkFmtSprint-4    143 ns/op    2 allocs/op
 ```
 
 </td><td>
 
-```
+```text
 BenchmarkStrconv-4    64.2 ns/op    1 allocs/op
 ```
 
@@ -2027,13 +2027,13 @@ for i := 0; i < b.N; i++ {
 </tr>
 <tr><td>
 
-```
+```text
 BenchmarkBad-4   50000000   22.2 ns/op
 ```
 
 </td><td>
 
-```
+```text
 BenchmarkGood-4  500000000   3.25 ns/op
 ```
 
@@ -2044,7 +2044,7 @@ BenchmarkGood-4  500000000   3.25 ns/op
 
 尽可能指定容器容量，以便为容器预先分配内存。这将在添加元素时最小化后续分配（通过复制和调整容器大小）。
 
-#### 指定 Map 容量提示
+#### 指定Map容量提示
 
 在尽可能的情况下，在使用 `make()` 初始化的时候提供容量信息
 
@@ -2134,13 +2134,13 @@ for n := 0; n < b.N; n++ {
 </td></tr>
 <tr><td>
 
-```
+```text
 BenchmarkBad-4    100000000    2.48s
 ```
 
 </td><td>
 
-```
+```text
 BenchmarkGood-4   100000000    0.21s
 ```
 
@@ -2157,6 +2157,7 @@ BenchmarkGood-4   100000000    0.21s
 作者应该在达到这个限制之前换行，
 但这不是硬性限制。
 允许代码超过此限制。
+
 ### 一致性
 
 本文中概述的一些标准都是客观性的评估，是根据场景、上下文、或者主观性的判断；
@@ -3125,6 +3126,7 @@ tests := []struct{
   {Subtract, "subtract"},
 }
 ```
+
 #### 省略结构中的零值字段
 
 初始化具有字段名的结构时，除非提供有意义的上下文，否则忽略值为零的字段。
@@ -3265,11 +3267,9 @@ var (
 </td></tr>
 </tbody></table>
 
-在尽可能的情况下，请在初始化时提供 map 容量大小，详细请看 [指定 Map 容量提示](#指定Map容量提示)。
-
+在尽可能的情况下，请在初始化时提供 map 容量大小，详细请看[指定Map容量提示](#指定map容量提示)
 
 另外，如果 map 包含固定的元素列表，则使用 map literals(map 初始化列表) 初始化映射。
-
 
 <table>
 <thead><tr><th>Bad</th><th>Good</th></tr></thead>
@@ -3335,7 +3335,7 @@ fmt.Printf(msg, 1, 2)
 如果不能使用预定义的名称，请以 f 结束选择的名称：`Wrapf`，而不是`Wrap`。`go vet`可以要求检查特定的 Printf 样式名称，但名称必须以`f`结尾。
 
 ```shell
-$ go vet -printfuncs=wrapf,statusf
+$go vet -printfuncs=wrapf,statusf
 ```
 
 另请参阅 [go vet: Printf family check].
@@ -3626,7 +3626,6 @@ use one vs other -->
   [govet]: https://golang.org/cmd/vet/
   [staticcheck]: https://staticcheck.io/
 
-
 ### Lint Runners
 
 我们推荐 [golangci-lint] 作为 go-to lint 的运行程序，这主要是因为它在较大的代码库中的性能以及能够同时配置和使用许多规范。这个 repo 有一个示例配置文件 [.golangci.yml] 和推荐的 linter 设置。
@@ -3636,7 +3635,6 @@ golangci-lint 有 [various-linters] 可供使用。建议将上述 linters 作�
 [golangci-lint]: https://github.com/golangci/golangci-lint
 [.golangci.yml]: https://github.com/uber-go/guide/blob/master/.golangci.yml
 [various-linters]: https://golangci-lint.run/usage/linters/
-
 
 ## Stargazers over time
 

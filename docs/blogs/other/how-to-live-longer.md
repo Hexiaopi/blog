@@ -66,7 +66,7 @@ categories:
   * [红肉和白肉最大的区别是什么？为啥要这么分呢？](https://www.zhihu.com/question/67223570/answer/809785380)
 * 蔬果
   * [每年54万人死亡，竟是因为水果吃得少！？这已成十大死亡因素之一！](https://www.sohu.com/a/322360740_164924)
-    * 出处：[Estimated Global, Regional, and National Cardiovascular Disease Burdens Related to Fruit and Vegetable Consumption: An Analysis from the Global Dietary Database (FS01-01-19) ](https://academic.oup.com/cdn/article-abstract/3/Supplement_1/nzz028.FS01-01-19/5516583)
+    * 出处：[Estimated Global, Regional, and National Cardiovascular Disease Burdens Related to Fruit and Vegetable Consumption: An Analysis from the Global Dietary Database (FS01-01-19)](https://academic.oup.com/cdn/article-abstract/3/Supplement_1/nzz028.FS01-01-19/5516583)
     * 每天摄入200克新鲜水果可使死亡率降低17%，糖尿病大血管并发症（如中风、缺血性心脏病等）风险降低13%，及糖尿病小血管并发症（如糖尿病肾病、糖尿病眼病、糖尿病足病等）风险降低28%
   * [《自然》子刊：每天二两西兰花，健康长寿都有啦！分析近6万人23年的数据发现，吃含黄酮类食物与死亡风险降低20%相关丨临床大发现](https://mp.weixin.qq.com/s/E6BAi-Vnhr1jXBm0Pys2ZQ)
     * 出处：[Flavonoid intake is associated with lower mortality in the Danish Diet Cancer and Health Cohort](https://www.nature.com/articles/s41467-019-11622-x)
@@ -76,7 +76,7 @@ categories:
 * 辣椒
   * [辣椒成死亡克星？据调研，常吃辣患病死亡风险可降低61%](https://3g.163.com/dy/article/F6Q7I1ME053228ZU.html)
     * 出处1：[Chili pepper consumption and mortality in Italian adults](https://www.sciencedirect.com/science/article/pii/S0735109719382063)
-	* 出处2：[The Association of Hot Red Chili Pepper Consumption and Mortality: A Large Population-Based Cohort Study](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169876)
+  	* 出处2：[The Association of Hot Red Chili Pepper Consumption and Mortality: A Large Population-Based Cohort Study](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0169876)
     * 2017年Plos One 的另一项来自美国的研究以16179名，年龄在18岁以上的人群为对象，并对其进行了高达19年的随访，发现在4946例死亡患者中，食用辣椒的参与者的全因死亡率为21.6％，而未食用辣椒的参与者的全因死亡率为33.6％。相较于不吃辣或很少吃（少于每周两次）的人群，每周吃辣＞4次的人群总死亡风险降低23%，心血管死亡风险降低34%。
 * 鸡蛋
   * [每天多吃半个蛋，增加7%的全因和心血管死亡风险？](https://m.thepaper.cn/baijiahao_11540780)
@@ -104,7 +104,7 @@ categories:
 * 碳水（存有大量争议）
   * [低碳生酮饮食（四）碳水化合物与长期死亡率](https://zhuanlan.zhihu.com/p/137815934)
     * 出处：The Lancet Public Health - [Dietary carbohydrate intake and mortality: a prospective cohort study and meta-analysis](https://www.sciencedirect.com/science/article/pii/S246826671830135X)
-    * 碳水越低，寿命越短；碳水越高，寿命也轻微缩短；碳水50%左右（其实按照一般的说法，这也算高碳水）是最长寿命区间 
+    * 碳水越低，寿命越短；碳水越高，寿命也轻微缩短；碳水50%左右（其实按照一般的说法，这也算高碳水）是最长寿命区间
     * ![碳水](https://user-images.githubusercontent.com/2707039/163703985-a2e2f8ac-101a-4f3c-903b-6850507f144b.jpg)
   * [最强营养搭配！BMJ：这么吃，心血管疾病和死亡风险更低](https://www.chinacdc.cn/gwxx/202003/t20200323_214639.html)
 * 槟榔
@@ -137,7 +137,7 @@ categories:
   * 出处：[Association of dairy intake with cardiovascular disease and mortality in 21 countries from five continents (PURE): a prospective cohort study](http://mdrf-eprints.in/1114/1/Association_of_dietary_patterns_and_dietary_diversity_with_cardiometabolic_disease_risk_factors.pdf)
   * 与不食用乳制品的人相比，每天摄入两份乳制品（一份指244克牛奶/酸奶，15克奶酪或5克黄油）的人，**全因死亡风险下降了17%**，心血管死亡风险下降23%，中风风险下降33%
 * 茶
-  * [10万中国人随访7年发现，每周喝三次茶与全因死亡风险降低15%，预期寿命增加1.26年相关 ](https://www.jianshu.com/p/5461a205cf95?utm_campaign=hugo)
+  * [10万中国人随访7年发现，每周喝三次茶与全因死亡风险降低15%，预期寿命增加1.26年相关](https://www.jianshu.com/p/5461a205cf95?utm_campaign=hugo)
   * 出处：[Tea consumption and the risk of atherosclerotic cardiovascular disease and all-cause mortality: The China-PAR project](https://www.researchgate.net/profile/Fangchao-Liu-4/publication/338483323_Tea_consumption_and_the_risk_of_atherosclerotic_cardiovascular_disease_and_all-cause_mortality_The_China-PAR_project/links/5e55e5e94585152ce8efe511/Tea-consumption-and-the-risk-of-atherosclerotic-cardiovascular-disease-and-all-cause-mortality-The-China-PAR-project.pdf)
   * [中国成年人饮茶与死亡风险的前瞻性关联研究](http://rs.yiigle.com/CN112338202202/1351516.htm)
   * 纳入分析的438 443例研究对象随访11.1年共发生死亡34 661例。与从不饮茶者相比，当前非每日饮茶者和每日饮茶者全因死亡HR值（95%CI）依次为0.89（0.86-0.91）和0.92（0.88-0.95）。分性别分析显示，饮茶对全因死亡风险的保护作用主要见于男性（交互P<0.05）
@@ -158,7 +158,7 @@ categories:
     * 每天多摄入一份12盎司的果汁，全因死亡率风险增加24%。
 * 咖啡
   * [重磅！多篇研究证实喝咖啡与人群全因死亡率降低直接相关](https://news.bioon.com/article/6725420.html)
-  * [科普 | 喝咖啡又多了一个新理由：降低死亡率！ ](https://www.sohu.com/a/439412995_100003595)
+  * [科普 | 喝咖啡又多了一个新理由：降低死亡率！](https://www.sohu.com/a/439412995_100003595)
   * [地中海成年人咖啡消耗量及全因，心血管疾病和癌症的死亡率](https://fanyi.pdf365.cn/help/249)
     * 在最近的荟萃分析中，该研究包括来自不同国家的40项研究和3,852,651名受试者。在这项荟萃分析显示，咖啡摄入量与各种原因的死亡率，CVD和癌症死亡率之间存在非线性关系，每天摄入两杯咖啡的癌症死亡率最低(RR = 0.96)，CVD最低的死亡率，每天2.5杯(RR= 0.83)，全天最低死亡率为每天3.5杯(RR= 0.85)，并且随着咖啡消费量的增加，死亡率没有进一步降低或增加
 * 亚精胺
@@ -209,7 +209,7 @@ categories:
 
 #### 6.2.1. 挥拍运动
 
-* [哪种运动性价比最高？权威医学杂志“柳叶刀”给出答案了 ](https://www.sohu.com/a/535581770_121124216)
+* [哪种运动性价比最高？权威医学杂志“柳叶刀”给出答案了](https://www.sohu.com/a/535581770_121124216)
   * 一周三次，每次45-60分钟，挥拍运动，降低~47%全因死亡率
   * 羽毛球、乒乓球、网球等都算挥拍运动，但由于西化研究背景，可能指网球更多。这隐式的表达了全身锻炼更为重要
 

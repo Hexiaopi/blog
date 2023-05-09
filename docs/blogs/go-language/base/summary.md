@@ -31,7 +31,7 @@ Go语言使用统一的UTF-8编码进行开发，减少因为编码问题导致�
 
 Go语言的项目工程简单，无须解决方案、工程文件和Make File。
 
-**Golang学习帮助**
+Golang学习帮助
 
 - `https://golang.org`Go语言官方网站，提供完善的参考文档；国内访问`https://golang.google.cn/`
 - `https://blog.golang.org`Go语言官方博客，不定期发布一些Go 语言实践文章；

@@ -37,4 +37,3 @@ categories:
 |         [cfssl](https://github.com/cloudflare/cfssl)         |                  Cloudflare的PKI和TLS工具集                  |
 |   [go-swagger](https://github.com/go-swagger/go-swagger/)    |                    自动生成Go Swagger文档                    |
 |           [glice](https://github.com/ribice/glice)           |                 分析导入的库，并打印出许可证                 |
-

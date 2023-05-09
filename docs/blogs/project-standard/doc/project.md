@@ -12,7 +12,8 @@ categories:
 > README文档是项目的门面，通过README文档可以帮助用户快速了解项目。
 
 README文档可以参考以下模板，或者通过在线网站生成[readme.so](https://readme.so/)
-```
+
+```text
 # 项目名称
 <!-- 简介项目 -->
 ## 功能特性
@@ -51,7 +52,8 @@ README文档可以参考以下模板，或者通过在线网站生成[readme.so]
 > 面向使用人员，包括：API文档、SDK文档、安装文档、功能介绍文档、最佳实践、操作指南、常见问题等。
 
 这里参考[IAM](https://github.com/marmotedu/iam)项目的文档结构
-```
+
+```text
 docs
 ├── devel                            # 开发文档，可以提前规划好，英文版文档和中文版文档
 │   ├── en-US/                       # 英文版文档，可以根据需要组织文件结构

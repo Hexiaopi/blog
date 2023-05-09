@@ -8,6 +8,8 @@ categories:
  -  Go语言
 ---
 
+[[toc]]
+
 ## 数据类型
 
 > Go语言基本数据类型（Data-types）划分方式有很多，这里按照**数据类型**进行划分：值类型、复合类型、引用类型
@@ -125,7 +127,6 @@ Unicode编码
 #### uintptr类型
 
 > Go语言中，uintptr是可以保存32位或64位的指针的无符号整数类型，和int类型一样，uintptr根据操作系统决定指针位数，32位操纵系统uintptr是32位的，64位操作系统uintptr是64位的。
-> 
 
 ### 复合类型
 
@@ -137,7 +138,7 @@ Unicode编码
 
 > 引用类型即指针类型，包括指针（pointer）、切片（silence）、字典（map）、通道（channel）、接口（interface）和函数（function）。
 
-:eyes: 
+:eyes:
 
 值类型和引用类型的区别在于，在函数参数传递过程中
 

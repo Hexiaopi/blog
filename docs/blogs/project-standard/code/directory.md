@@ -15,9 +15,8 @@ Go语言项目业界公认的目录结构是怎样的:question:
 
 ## 目录结构
 
-
 > 可以通过以下维度进行考量：
-> 
+>
 > - 命名清晰：目录命名需要简洁，清晰的表达出该目录实现的功能，做到一看到该目录名就知道是干嘛的；
 >
 > - 功能明确：目录的功能必须明确，例如：api目录是接口服务、service目录是业务逻辑；
@@ -26,7 +25,7 @@ Go语言项目业界公认的目录结构是怎样的:question:
 
 这里参考Go语言公认项目目录[project-layout](https://github.com/golang-standards/project-layout)结构如下：
 
-```
+```text
 .
 ├── api
 ├── assets
@@ -63,22 +62,28 @@ Go语言项目业界公认的目录结构是怎样的:question:
 ## 应用目录
 
 ### api目录
+
 > OpenAPI/Swagger规范、JSON模式文件、协议定义文件
 
 ### cmd目录
+
 > 该项目的主要应用，Go语言以main函数文件作为程序入口。每个应用程序的目录名称应与执行文件的名称相匹配，例如：`/cmd/myapp`
 
 ### examples目录
+
 > 应用程序和公共库的示例
 
 ### internal目录
+
 > 存放私有应用和库代码，如果一些代码，你不希望在其他在其他应用和库中被导入，可以放在internal目录下。而对于私有应用共享的代码可以放在/internal/pkg目录下。
 建议internal目录以各个组件的方式进行分层。
 
 ### pkg目录
+
 > 与internal相反，该目录存放可供其他外部应用程序使用的库代码。
 
 ### vendor目录
+
 > 该目录存放项目依赖，可通过`go mod vendor`创建。
 
 :eyes: 注意
@@ -86,6 +91,7 @@ Go语言项目业界公认的目录结构是怎样的:question:
 如果开发的是Go语言库，不要提交vendor依赖包
 
 ### test目录
+
 > 其他外部测试应用程序和测试数据。对于更大的项目，有一个数据子目录是有意义的。例如：`/test/data`或者`/test/testdata`
 
 :eyes: 注意
@@ -93,9 +99,11 @@ Go语言项目业界公认的目录结构是怎样的:question:
 Go 也会忽略以“.”开头的目录或文件。或“_”，因此您可以更灵活地命名测试数据目录。
 
 ### third_party目录
+
 > 外部帮助工具，分支代码或其他第三方应用。
 
 ### tools目录
+
 > 该项目的支持工具
 
 :eyes: 注意
@@ -103,20 +111,23 @@ Go 也会忽略以“.”开头的目录或文件。或“_”，因此您可以
 这些工具可以从`pkg`和`internal`目录导入代码
 
 ### web目录
+
 > 前端代码存放目录，用来存放Web静态资源，服务端模块和单页应用（SPAs）
 
 ### assets
+
 > 其他资产，例如：图像、徽标、CSS、JavaScript等
 
 ### website
-> 项目网站或者Github页面
 
+> 项目网站或者Github页面
 
 ## 项目管理目录与文件
 
 ### build目录
+
 > 打包和持续集成
-> 
+>
 > 将云 (AMI)、容器 (Docker)、操作系统（deb、rpm、pkg）包配置和脚本放在`/build/package`目录中。
 >
 > 将CI（travis、circle、drone）配置和脚本放在`/build/ci`目录中。
@@ -126,21 +137,24 @@ Go 也会忽略以“.”开头的目录或文件。或“_”，因此您可以
 一些 CI 工具（例如 Travis CI）对其配置文件的位置非常挑剔。尝试将配置文件放在/build/ci将它们链接到 CI 工具期望它们的位置的目录中（如果可能）。
 
 ### configs目录
+
 > 配置文件，例如这里可以存放confd或consul-template模版文件。
 
 ### deployments目录
+
 > IaaS、PaaS、系统和容器编排部署配置和模板（docker-compose、kubernetes/helm、mesos、terraform、bosh）。
 
 :eyes: 注意
 
 在某些存储库（尤其是使用 kubernetes 部署的应用程序）中，此目录称为`deploy`.
 
-
 ### init目录
+
 > 系统初始化（systemd、upstart、sysv）和进程管理器(runit、supervisord)配置文件，在非容器化部署的项目中会使用到。
 
 例如：systemd的unit文件，用于管理程序，一般以.service结尾
-```
+
+```text
 [Unit]
 Description=OpenSSH server daemon
 Documentation=man:sshd(8) man:sshd_config(5)
@@ -162,10 +176,12 @@ WantedBy=multi-user.target
 ```
 
 ### scripts目录
+
 > 执行各种构建、安装、分析等操作的脚本。这些脚本使根级 Makefile 小而简单
- 
+
 例如: [terraform-website](https://github.com/hashicorp/terraform/blob/master/Makefile)使用了很多scipts目录下的脚本，使得Makefile小但功能强大。
-```
+
+```text
 WEBSITE_REPO=github.com/hashicorp/terraform-website
 VERSION?="0.3.44"
 PWD=$$(pwd)
@@ -237,11 +253,12 @@ website/build-local:
 .PHONY: fmtcheck importscheck generate protobuf website website-test staticcheck website/local website/build-local
 ```
 
-
 ### githooks目录
+
 > Git钩子，比如可以将commit-msg存放在该目录
 
 ### Makefile文件
+
 > Makefile是一个很优秀的项目管理工具，通常用来执行静态代码检查、单元测试、编译等功能
 
 - 静态代码检查(lint)：推荐用 golangci-lint。
@@ -259,6 +276,7 @@ website/build-local:
 ## 文档目录与文件
 
 ### docs目录
+
 > 设计和用户文档，除了`godoc`生成的文档之外
 
 - /docs/devel/{en-US,zh-CN}: 存放开发文档、hack文档
@@ -266,21 +284,24 @@ website/build-local:
 - /docs/image: 存放图片文件
 
 ### CHANGELOG目录
+
 > 当项目有更新时，为了方便了解当前版本的更新内容或者历史更新内容，需要将更新记录存放到CHANGELOG目录。
 
 编写CHANGELOG是一个繁琐的工作，我们可以结合[Angular规范](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines)和[git-chglog工具](https://github.com/git-chglog/git-chglog)
 
 ### CONTRIBUTING.md文件
+
 > 开源项目用于说明如何贡献代码，如何开源协同等。
 
 ### LICENSE文件
+
 > 版权文件，常用的开源协议有：Apache 2.0、MIT、GPL等
 
 为了声明版权，你可能会需要将LICENSE头添加到源代码文件或者其他文件中，可以尝试使用这个工具自动化实现：[addlicense](https://github.com/marmotedu/addlicense)
 
 当代码中引用了其他开源代码时，需要在LICENSE中说明对其他源码的引用，可以借助工具来进行检查：[glice](https://github.com/ribice/glice)
 
-```
+```text
 +---------------------------------------+-----------------------------------------------+--------------+
 |              DEPENDENCY               |                    REPOURL                    |   LICENSE    |
 +---------------------------------------+-----------------------------------------------+--------------+
@@ -299,10 +320,13 @@ website/build-local:
 ```
 
 ### README.md文件
+
 > 项目的README文件一般包含了项目的介绍、功能、快速安装和使用指引、详细的文档链接以及开发指引。
 
 有时候README文档比较长，可以借助工具[tocenize](https://github.com/nochso/tocenize)来添加markdown toc索引
 
 ## 不应该拥有的目录
+
 ### src
+
 > Go语言的工作空间包含：`pkg`、`bin`、`src`。且项目代码放在`src`目录下，如果一个Go项目包含`src`目录，则项目路径将会变成：`/some/path/to/workspace/src/your_project/src/your_code.go`，就变得非常丑。

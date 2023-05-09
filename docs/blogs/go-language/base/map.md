@@ -23,6 +23,7 @@ categories:
 ```go
 var m map[string]int
 ```
+
 ::: warning
 map对于`value`的类型没有限制，但是对`key`的类型有严格的要求：**key的类型必须支持"=="和"!="两个操作符的数据类型**，因此：函数、map、切片不能作为key类型。
 :::
@@ -34,11 +35,13 @@ map对于`value`的类型没有限制，但是对`key`的类型有严格的要�
 ## 初始化
 
 - 字面量初始化
+
   ```go
   m:=map[string]int{"apple":2,"banana":3}
   ```
 
 - 内置函数make()初始化
+
   ```go
   m:=make(map[string]int,10)
   ```
@@ -67,6 +70,7 @@ func main() {
 ```
 
 :eyes:
+
 - 删除不存在的key不会导致panic；
 - 查询不存在的key，如果未使用**comma ok**语法，则会返回value类型对应的零值
 
@@ -193,6 +197,7 @@ map的扩缩容的主要区别在于hmap.B的容量大小改变，而缩容由�
 ## map注意事项
 
 ### 非并发读写安全的
+
 ```go
 package main
 
@@ -234,10 +239,12 @@ func main() {
 	time.Sleep(5 * time.Second)
 }
 ```
+
 运行报错：`fatal error: concurrent map iteration and map write`
 Go原生map是非并发安全的，Go 1.9版本中引入支持并发写安全的`sync.Map`类型
 
 ### 无法通过索引直接获取value的地址
+
 ```go{15}
 package main
 
@@ -256,9 +263,11 @@ func main() {
 	fmt.Println(&m[0])  //invalid operation: cannot take address of m[0] (map index expression of type Num)
 }
 ```
+
 这是由于map可以自动扩容，map中的数据元素的value位置可能在这过程中发生变化，这个约束在编译期间就生效。
 
 ### 尽量使用cap参数初始化map
+
 ```go
 package main
 
@@ -286,7 +295,8 @@ func BenchmarkMapInitWithCap(b *testing.B) {
 ```
 
 性能基准测试结果如下：
-```
+
+```text
 go test -benchmem -bench=. cap_benchmark_test.go           
 goos: darwin
 goarch: amd64

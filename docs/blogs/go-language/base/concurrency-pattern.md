@@ -14,14 +14,17 @@ Go语言推荐CSP模型进行并发处理，而非通过共享内存。这里总
 
 [[toc]]
 
-# Go并发模式
+## Go并发模式
+
 我们都知道Go语言开启协程只需要`go func(){ }`，有时候需要与goroutine之间建立联系，方便进一步控制与处理。
 因此总结一些范式，优雅的管理goroutine。
 
-## 退出模式
+### 退出模式
+
 使用关键字`go`很容易启动goroutine，这样创建的协程和当前协程已经分离，我们并不知道
 
-### 等待指定协程退出
+#### 等待指定协程退出
+
 ```go {15}
 package main
 
@@ -54,11 +57,13 @@ func main() {
 	fmt.Println("worker work done!")
 }
 ```
+
 ::: tip
   spawn函数创建的新goroutine与调用spawn函数的goroutine（main goroutine）之间通过channel建立了联系。
 :::
 
-### 等待多个协程退出
+#### 等待多个协程退出
+
 ```go {19}
 package main
 
@@ -108,7 +113,8 @@ func main() {
   通过sync.WaitGroup，对于每一个协程处理前进行wg.Add(1)，退出时执行wg.Done()，并等待所有的协程退出wg.Wait()。保障所有的协程都会结束。
 :::
 
-## 管道模式-pipeline
+### 管道模式-pipeline
+
 管道是Unix/Linux上一种典型的并发程序设计模式，例如执行：
 
 ```bash
@@ -289,6 +295,7 @@ func main() {
 ```
 
 其中：
+
 - c1、c2是两个相同的goroutine从同一个channel取数据进行平方计算，这就是扇出；
 - merge从c1、c2两个channel里取数据合并到一个channel里，这就是扇入；
 
