@@ -34,13 +34,13 @@ categories:
 
 ### 不可重复读问题
 
-> 不可重复读是指：一个事务查询同一条记录2次，得到的结果不一致
+> 不可重复读是指：一个事务多次读取同一行数据，但是在多次读取中数据发生了改变。
 
 ![non-repeatable-read](./images/non-repeatable-read.png)
 
 ### 幻读问题
 
-> 幻读是指：select操作得到的结果所表征的数据状态无法支撑后续的业务操作
+> 幻读是指：一个事务多次执行同一条 SQL 语句，但结果集却不同，导致无法支撑后续的业务操作
 
 ![phantom-read](./images/phantom-read.png)
 
