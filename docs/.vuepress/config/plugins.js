@@ -12,8 +12,14 @@ module.exports = [
         {
           name: '夜空中最亮的星',
           artist: '逃跑计划',
-          url: 'https://music.163.com/song/media/outer/url?id=25706282',
+          url: 'https://music.163.com/song/media/outer/url?id=1953934148',
           cover: 'http://p1.music.126.net/Eef2K2KV9dT3XUA6_Ve-Rw==/109951165543196748.jpg?param=130y130'
+        },
+        {
+          name: '如愿',
+          artist: '我和我的父辈',
+          url: 'https://music.163.com/song/media/outer/url?id=1937110718',
+          cover: 'https://p1.music.126.net/wcLGxfQyZWr-XMstz3HfTw==/109951166469102695.jpg?param=180y180'
         },
         {
           name: '你不要担心',
