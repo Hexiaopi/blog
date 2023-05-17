@@ -3,6 +3,7 @@ const plugins = require('./config/plugins')
 module.exports = {
   title: "何小进童鞋个人学习笔记",
   description: '个人博客',
+  base: '/blog/',
   dest: 'public',
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
