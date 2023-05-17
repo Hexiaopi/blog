@@ -27,7 +27,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: build
-        run: npm install && npm run build
+        run: export NODE_OPTIONS=--openssl-legacy-provider && npm install && npm run build
 
       # Runs a set of commands using the runners shell
       - name: deploy
