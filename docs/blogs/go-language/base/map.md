@@ -114,6 +114,7 @@ type bmap struct {
 ![map](./images/map.png)
 
 key和value分开存储，目的是为了减少内存对齐带来的内存浪费，以map[int8]int64为例：
+
 ![map-memory](./images/map-memory.png)
 
 每个bucket可以存储8个键值对，超过就会创建一个新的bucket，通过overflow链接
@@ -133,8 +134,8 @@ hash冲突并不是好事情，它降低了存取效率，好的Hash算法可以
 
 当Hash表的负载因子过大时需要rehash，即申请更多的bucket，并对所有的键值对重新组织，使其均匀的分布在这些bucket中。
 
-- redis的负载因子大于1时就会触发rehash；
-- go的负载因子大于6.5时才会触发rehash；
+- redis的负载因子大于1时就会触发rehash，因为redis的每个bucket只能存1个键值对；
+- go的负载因子大于6.5时才会触发rehash，因为go的每个bucket可以存8个键值对；
 
 ### 扩容
 
@@ -144,7 +145,7 @@ hash冲突并不是好事情，它降低了存取效率，好的Hash算法可以
 - overflow的数量大于2^15=32768
 
 map的扩缩容的主要区别在于hmap.B的容量大小改变，而缩容由于hmap.B压根不变，内存占用依然存在。这就导致在删除元素时，并不会释放内存，使得分配的总内存不断增加，如果不注意，内存就很容易爆了。<Badge text="注意" type="warning"/>
-[](https://eddycjy.com/posts/go/map-reset/)
+[Go map 如何缩容？](https://eddycjy.com/posts/go/map-reset/)
 
 #### 增量扩容
 
@@ -155,6 +156,7 @@ map的扩缩容的主要区别在于hmap.B的容量大小改变，而缩容由�
 3. buckets指向新的bucket数组；
 4. 将oldbuckets的键值对搬迁到新的bucket数组；
 5. 释放oldbuckets；
+
 ![map-expand](./images/map-expand.png)
 
 #### 等量扩容
@@ -162,6 +164,8 @@ map的扩缩容的主要区别在于hmap.B的容量大小改变，而缩容由�
 > 用于解决一个bucket链接很多bucket，overflow数量过高
 >
 > bucket数组大小不变，重新排列键值对，分散到不同的bucket数组中
+>
+> 这样就提高了访问效率
 
 ### 增删改查
 
@@ -172,6 +176,7 @@ map的扩缩容的主要区别在于hmap.B的容量大小改变，而缩容由�
 - 取hash值高位，在tophash数组中查询；
 - 如果tophash[i]中存储的hash值与当前key的hash值相等，则获取tophash[i]的key值进行比较；
 - 当前bucket没有找到，则依次从溢出的bucket中查找；
+
 ::: tip
 如果当前map处于搬迁过程中，那么查找时从oldbuckets数组中查找，不再从新的buckets数组中查找
 :::
@@ -241,7 +246,15 @@ func main() {
 ```
 
 运行报错：`fatal error: concurrent map iteration and map write`
-Go原生map是非并发安全的，Go 1.9版本中引入支持并发写安全的`sync.Map`类型
+
+::: tip
+Go 在 map 的实现中增加了读写检查机制，一旦发现读写冲突立即触发 panic
+
+如果想使用并发的map：
+
+- 可以使用Go 1.9版本中引入支持并发写安全的`sync.Map`类型；
+- 可以使用map时增加锁；
+:::
 
 ### 无法通过索引直接获取value的地址
 
@@ -264,7 +277,9 @@ func main() {
 }
 ```
 
-这是由于map可以自动扩容，map中的数据元素的value位置可能在这过程中发生变化，这个约束在编译期间就生效。
+::: tip
+这是由于map会扩容，map中的数据元素的value地址可能在扩容过程中发生变化，因此获取这个地址没有意义，Go语言为了防止出现该问题，在编译期间就检测是否有获取地址行为，避免出现问题。
+:::
 
 ### 尽量使用cap参数初始化map
 
