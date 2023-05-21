@@ -5,7 +5,7 @@ tags:
  - Go
  - 工具
 categories:
- -  Go语言
+ - Go语言
 ---
 
 ::: tip

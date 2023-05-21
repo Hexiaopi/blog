@@ -5,7 +5,7 @@ tags:
  - Go
  - 基础
 categories:
- -  Go语言
+ - Go语言
 ---
 
 ![interface](http://cdn.cjhe.top/blog/interface.png)

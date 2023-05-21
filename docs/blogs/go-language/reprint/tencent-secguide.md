@@ -6,6 +6,7 @@ tags:
  - 安全
 categories:
  - Go语言
+ - 转载
 ---
 
 【转】[原文链接](https://github.com/Tencent/secguide)

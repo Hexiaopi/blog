@@ -6,7 +6,7 @@ tags:
  - 规范
  - 基础
 categories:
- -  Go语言
+ - Go语言
 ---
 
 ## 命名规则
