@@ -102,9 +102,16 @@ module.exports = {
      * valine 设置 (if you need valine comment )
      */
 
-    valineConfig: {
-      appId: 'uneT3yd27cgSQnzXs6U0lUxj-gzGzoHsz',// your appId
-      appKey: 'BscTftedJDk0mUJVokDYbOEH', // your appKey
+    // valineConfig: {
+    //   appId: 'uneT3yd27cgSQnzXs6U0lUxj-gzGzoHsz',// your appId
+    //   appKey: 'BscTftedJDk0mUJVokDYbOEH', // your appKey
+    // }
+    vssueConfig: {
+      platform: "github",
+      owner: "Hexiaopi",
+      repo: "blog",
+      clientId: "9d2b2a23623f252a0294",
+      clientSecret: "d42dbaf3b7dbc9aa6dd55ba11b89d4111ea8ffc5",
     }
   },
   plugins,
